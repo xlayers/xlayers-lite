@@ -1,0 +1,27 @@
+:host {
+  display: block;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+section {
+  position: absolute;
+  z-index: 1;
+  color: #000;
+  top: 1px;
+  right: -1px;
+  background: white;
+  padding: 3px;
+}
+
+a {
+  color: rgb(220, 61, 106);
+  text-decoration: none;
+}
+
+input[type='file'] {
+  display: none;
+}

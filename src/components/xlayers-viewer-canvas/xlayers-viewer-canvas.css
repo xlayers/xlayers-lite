@@ -1,0 +1,35 @@
+:host {
+  display: block;
+  width: 100%;
+  height: calc(100% - 64px);
+  transform: none;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+:host(.is-3d-view) {
+  perspective: 9000px;
+  transform: rotateY(22deg) rotateX(30deg);
+}
+img {
+  left: 2px;
+  top: 2px;
+}
+.canvas {
+  display: none;
+  cursor: move;
+  left: 50%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+  transform: translate3d(-50%, 50%, 0px) scale(1);
+}
+.canvas img {
+  opacity: 1;
+  transition: opacity 0.1s linear;
+}
+.canvas .hidden img {
+  opacity: 0;
+}
+.selected {
+  display: block;
+}

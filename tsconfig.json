@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "declaration": false,
+    "experimentalDecorators": true,
+    "lib": ["esnext", "es2017", "dom"],
+    "moduleResolution": "node",
+    "module": "esnext",
+    "target": "es2017",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "jsx": "react",
+    "jsxFactory": "h",
+    "baseUrl": "",
+    "paths": {
+      "@xlayers/core": ["src/@xlayers/core/index"],
+      "@xlayers/core/*": ["src/@xlayers/core/*"],
+      "@xlayers/sketch-ingestor": ["src/@xlayers/sketch-ingestor/index"],
+      "@xlayers/sketch-ingestor/*": ["src/@xlayers/sketch-ingestor/*"],
+      "@xlayers/sketch-lib": ["src/@xlayers/sketch-lib/index"],
+      "@xlayers/sketch-lib/*": ["src/@xlayers/sketch-lib/*"],
+      "@xlayers/css-blocgen": ["src/@xlayers/css-blocgen/index"],
+      "@xlayers/css-blocgen/*": ["src/@xlayers/css-blocgen/*"],
+      "@xlayers/svg-blocgen": ["src/@xlayers/svg-blocgen/index"],
+      "@xlayers/svg-blocgen/*": ["src/@xlayers/svg-blocgen/*"],
+      "@xlayers/web-blocgen": ["src/@xlayers/web-blocgen/index"],
+      "@xlayers/web-blocgen/*": ["src/@xlayers/web-blocgen/*"]
+    }
+  },
+  "include": ["src", "types/jsx.d.ts"],
+  "exclude": ["node_modules"]
+}
