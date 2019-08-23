@@ -1,12 +1,11 @@
 :host {
   display: block;
+  overflow: hidden;
 }
 
 x-layers-container {
-  width: var(--x-layers-width);
-  height: var(--x-layers-height);
-  min-width: var(--x-layers-width);
-  min-height: var(--x-layers-height);
+  width: calc(var(--x-layers-width) - 2px);
+  height: calc(var(--x-layers-height) - 2px);
   border: 1px solid black;
   border-radius: 2px;
   background-color: transparent;
