@@ -9,107 +9,127 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 
 export namespace Components {
-  interface XlayersUpload {}
-  interface XlayersViewer {}
-  interface XlayersViewerCanvas {
-    'data': SketchMSData;
+  interface XLayers {
+    'mode': "2d" | "3d";
+    'src': string;
+    'wireframe': boolean;
   }
-  interface XlayersViewerContainer {
+  interface XLayersCanvas {
     'data': SketchMSData;
+    'mode': "2d" | "3d";
+    'wireframe': boolean;
+    'zoom': number;
   }
-  interface XlayersViewerLayer {
+  interface XLayersContainer {
+    'data': SketchMSData;
+    'mode': "2d" | "3d";
+    'wireframe': boolean;
+    'zoom': number;
+  }
+  interface XLayersLayer {
     'data': SketchMSData;
     'layer': SketchMSLayer;
     'level': number;
     'wireframe': boolean;
   }
-  interface XlayersViewerPage {
+  interface XLayersPage {
     'data': SketchMSData;
     'level': number;
     'page': SketchMSPage;
     'wireframe': boolean;
   }
+  interface XLayersUpload {}
 }
 
 declare global {
 
 
-  interface HTMLXlayersUploadElement extends Components.XlayersUpload, HTMLStencilElement {}
-  var HTMLXlayersUploadElement: {
-    prototype: HTMLXlayersUploadElement;
-    new (): HTMLXlayersUploadElement;
+  interface HTMLXLayersElement extends Components.XLayers, HTMLStencilElement {}
+  var HTMLXLayersElement: {
+    prototype: HTMLXLayersElement;
+    new (): HTMLXLayersElement;
   };
 
-  interface HTMLXlayersViewerElement extends Components.XlayersViewer, HTMLStencilElement {}
-  var HTMLXlayersViewerElement: {
-    prototype: HTMLXlayersViewerElement;
-    new (): HTMLXlayersViewerElement;
+  interface HTMLXLayersCanvasElement extends Components.XLayersCanvas, HTMLStencilElement {}
+  var HTMLXLayersCanvasElement: {
+    prototype: HTMLXLayersCanvasElement;
+    new (): HTMLXLayersCanvasElement;
   };
 
-  interface HTMLXlayersViewerCanvasElement extends Components.XlayersViewerCanvas, HTMLStencilElement {}
-  var HTMLXlayersViewerCanvasElement: {
-    prototype: HTMLXlayersViewerCanvasElement;
-    new (): HTMLXlayersViewerCanvasElement;
+  interface HTMLXLayersContainerElement extends Components.XLayersContainer, HTMLStencilElement {}
+  var HTMLXLayersContainerElement: {
+    prototype: HTMLXLayersContainerElement;
+    new (): HTMLXLayersContainerElement;
   };
 
-  interface HTMLXlayersViewerContainerElement extends Components.XlayersViewerContainer, HTMLStencilElement {}
-  var HTMLXlayersViewerContainerElement: {
-    prototype: HTMLXlayersViewerContainerElement;
-    new (): HTMLXlayersViewerContainerElement;
+  interface HTMLXLayersLayerElement extends Components.XLayersLayer, HTMLStencilElement {}
+  var HTMLXLayersLayerElement: {
+    prototype: HTMLXLayersLayerElement;
+    new (): HTMLXLayersLayerElement;
   };
 
-  interface HTMLXlayersViewerLayerElement extends Components.XlayersViewerLayer, HTMLStencilElement {}
-  var HTMLXlayersViewerLayerElement: {
-    prototype: HTMLXlayersViewerLayerElement;
-    new (): HTMLXlayersViewerLayerElement;
+  interface HTMLXLayersPageElement extends Components.XLayersPage, HTMLStencilElement {}
+  var HTMLXLayersPageElement: {
+    prototype: HTMLXLayersPageElement;
+    new (): HTMLXLayersPageElement;
   };
 
-  interface HTMLXlayersViewerPageElement extends Components.XlayersViewerPage, HTMLStencilElement {}
-  var HTMLXlayersViewerPageElement: {
-    prototype: HTMLXlayersViewerPageElement;
-    new (): HTMLXlayersViewerPageElement;
+  interface HTMLXLayersUploadElement extends Components.XLayersUpload, HTMLStencilElement {}
+  var HTMLXLayersUploadElement: {
+    prototype: HTMLXLayersUploadElement;
+    new (): HTMLXLayersUploadElement;
   };
   interface HTMLElementTagNameMap {
-    'xlayers-upload': HTMLXlayersUploadElement;
-    'xlayers-viewer': HTMLXlayersViewerElement;
-    'xlayers-viewer-canvas': HTMLXlayersViewerCanvasElement;
-    'xlayers-viewer-container': HTMLXlayersViewerContainerElement;
-    'xlayers-viewer-layer': HTMLXlayersViewerLayerElement;
-    'xlayers-viewer-page': HTMLXlayersViewerPageElement;
+    'x-layers': HTMLXLayersElement;
+    'x-layers-canvas': HTMLXLayersCanvasElement;
+    'x-layers-container': HTMLXLayersContainerElement;
+    'x-layers-layer': HTMLXLayersLayerElement;
+    'x-layers-page': HTMLXLayersPageElement;
+    'x-layers-upload': HTMLXLayersUploadElement;
   }
 }
 
 declare namespace LocalJSX {
-  interface XlayersUpload extends JSXBase.HTMLAttributes<HTMLXlayersUploadElement> {
-    'onFileUploaded'?: (event: CustomEvent<any>) => void;
+  interface XLayers extends JSXBase.HTMLAttributes<HTMLXLayersElement> {
+    'mode'?: "2d" | "3d";
+    'src': string;
+    'wireframe'?: boolean;
   }
-  interface XlayersViewer extends JSXBase.HTMLAttributes<HTMLXlayersViewerElement> {}
-  interface XlayersViewerCanvas extends JSXBase.HTMLAttributes<HTMLXlayersViewerCanvasElement> {
+  interface XLayersCanvas extends JSXBase.HTMLAttributes<HTMLXLayersCanvasElement> {
     'data'?: SketchMSData;
+    'mode'?: "2d" | "3d";
+    'wireframe'?: boolean;
+    'zoom'?: number;
   }
-  interface XlayersViewerContainer extends JSXBase.HTMLAttributes<HTMLXlayersViewerContainerElement> {
+  interface XLayersContainer extends JSXBase.HTMLAttributes<HTMLXLayersContainerElement> {
     'data'?: SketchMSData;
+    'mode'?: "2d" | "3d";
+    'wireframe'?: boolean;
+    'zoom'?: number;
   }
-  interface XlayersViewerLayer extends JSXBase.HTMLAttributes<HTMLXlayersViewerLayerElement> {
+  interface XLayersLayer extends JSXBase.HTMLAttributes<HTMLXLayersLayerElement> {
     'data'?: SketchMSData;
     'layer'?: SketchMSLayer;
     'level'?: number;
     'wireframe'?: boolean;
   }
-  interface XlayersViewerPage extends JSXBase.HTMLAttributes<HTMLXlayersViewerPageElement> {
+  interface XLayersPage extends JSXBase.HTMLAttributes<HTMLXLayersPageElement> {
     'data'?: SketchMSData;
     'level'?: number;
     'page'?: SketchMSPage;
     'wireframe'?: boolean;
   }
+  interface XLayersUpload extends JSXBase.HTMLAttributes<HTMLXLayersUploadElement> {
+    'onFileUploaded'?: (event: CustomEvent<any>) => void;
+  }
 
   interface IntrinsicElements {
-    'xlayers-upload': XlayersUpload;
-    'xlayers-viewer': XlayersViewer;
-    'xlayers-viewer-canvas': XlayersViewerCanvas;
-    'xlayers-viewer-container': XlayersViewerContainer;
-    'xlayers-viewer-layer': XlayersViewerLayer;
-    'xlayers-viewer-page': XlayersViewerPage;
+    'x-layers': XLayers;
+    'x-layers-canvas': XLayersCanvas;
+    'x-layers-container': XLayersContainer;
+    'x-layers-layer': XLayersLayer;
+    'x-layers-page': XLayersPage;
+    'x-layers-upload': XLayersUpload;
   }
 }
 

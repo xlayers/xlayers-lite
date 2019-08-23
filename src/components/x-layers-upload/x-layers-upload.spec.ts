@@ -1,4 +1,4 @@
-import { XlayersUpload } from './xlayers-upload';
+import { XlayersUpload } from './x-layers-upload';
 
 describe('xlayers-upload', () => {
   it('builds', () => {

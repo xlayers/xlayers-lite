@@ -12,17 +12,22 @@
     <script type="module" src="/build/xlayers-lite.esm.js"></script>
     <script nomodule src="/build/xlayers-lite.js"></script>
     <style>
-      xlayers-viewer {
-        --xlayers-viewer-width: 900px;
-        --xlayers-viewer-height: 600px;
-        width: var(--xlayers-viewer-width);
-        height: var(--xlayers-viewer-height);
+      x-layers {
+        --x-layers-width: 900px;
+        --x-layers-height: 600px;
+        width: var(--x-layers-width);
+        height: var(--x-layers-height);
         margin: 0 auto;
         position: relative;
       }
     </style>
   </head>
   <body>
-    <xlayers-viewer></xlayers-viewer>
+    <x-layers 
+      src="https://sketchfiles.blob.core.windows.net/sketchapp/md-components-date-picker.sketch"
+      mode="3d"
+      wireframe="true"
+      zoom="3"
+    ></x-layers>
   </body>
 </html>

@@ -14,7 +14,7 @@ export class SketchService {
   private webBlocGen: WebBlocGenService = new WebBlocGenService();
   constructor() {}
 
-  async loadSketchFile(file: File) {
+  async loadSketchFile(file: File | Blob) {
     const data = await this.sketchIngestor.process(file);
     data.pages.forEach(page => {
       this.webBlocGen.compute(page, data);

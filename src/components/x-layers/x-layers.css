@@ -2,11 +2,11 @@
   display: block;
 }
 
-xlayers-viewer-container {
-  width: var(--xlayers-viewer-width);
-  height: var(--xlayers-viewer-height);
-  min-width: var(--xlayers-viewer-width);
-  min-height: var(--xlayers-viewer-height);
+x-layers-container {
+  width: var(--x-layers-width);
+  height: var(--x-layers-height);
+  min-width: var(--x-layers-width);
+  min-height: var(--x-layers-height);
   border: 1px solid black;
   border-radius: 2px;
   background-color: transparent;

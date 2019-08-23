@@ -4,8 +4,8 @@ import { ImageService, SymbolService, TextService } from "@xlayers/sketch-lib";
 import { SvgBlocGenService } from "@xlayers/svg-blocgen";
 
 @Component({
-  tag: "xlayers-viewer-layer",
-  styleUrl: "xlayers-viewer-layer.css",
+  tag: "x-layers-layer",
+  styleUrl: "x-layers-layer.css",
   scoped: true
 })
 export class XlayersViewerLayer {
@@ -131,7 +131,7 @@ export class XlayersViewerLayer {
           }}
         >
           {this.layers.map(layer => (
-            <xlayers-viewer-layer
+            <x-layers-layer
               class={"layer " + (this.wireframe ? "wireframe" : "")}
               data={this.data}
               layer={layer}

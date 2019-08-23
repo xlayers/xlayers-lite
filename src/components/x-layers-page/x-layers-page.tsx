@@ -1,15 +1,15 @@
 import { Component, h, Host, Prop } from "@stencil/core";
 
 @Component({
-  tag: "xlayers-viewer-page",
-  styleUrl: "xlayers-viewer-page.css",
+  tag: "x-layers-page",
+  styleUrl: "x-layers-page.css",
   scoped: true
 })
 export class XlayersViewerPage {
   @Prop() data: SketchMSData;
   @Prop() page: SketchMSPage;
 
-  @Prop() wireframe = true;
+  @Prop() wireframe: boolean;
   @Prop() level = 0;
 
   componentWillLoad() {
@@ -18,7 +18,7 @@ export class XlayersViewerPage {
     return (
       <Host>
         {this.page.layers.map(layer => (
-          <xlayers-viewer-layer
+          <x-layers-layer
             class={"layer " + (this.wireframe ? "wireframe" : "")}
             data={this.data}
             layer={layer}

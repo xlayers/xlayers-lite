@@ -9,7 +9,7 @@ const jszipLoadAsync = (jszip: any): jszip is { loadAsync: Function } => {
 };
 
 export class SketchIngestorService {
-  async process(file: File) {
+  async process(file: File | Blob) {
     const data = {
       images: {},
       pages: [],

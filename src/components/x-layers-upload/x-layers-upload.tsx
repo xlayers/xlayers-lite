@@ -2,8 +2,8 @@ import { Component, Event, h, Host, Listen } from "@stencil/core";
 import { EventEmitter } from "events";
 
 @Component({
-  tag: "xlayers-upload",
-  styleUrl: "xlayers-upload.css",
+  tag: "x-layers-upload",
+  styleUrl: "x-layers-upload.css",
   scoped: true
 })
 export class XlayersUpload {
