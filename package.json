@@ -27,6 +27,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/jasmine": "^3.4.0",
     "@types/node": "^12.7.2",
     "@types/sketchapp": "^1.0.3",
     "big-integer": "^1.6.44",
