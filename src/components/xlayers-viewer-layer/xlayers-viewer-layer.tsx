@@ -1,39 +1,30 @@
-import {
-  Component,
-  Host,
-  h,
-  Prop,
-  State,
-  Element,
-  Listen
-} from "@stencil/core";
-import { SvgBlocGenService } from "@xlayers/svg-blocgen";
-import { TextService, SymbolService, ImageService } from "@xlayers/sketch-lib";
+import { Component, Element, h, Host, Prop, State } from "@stencil/core";
 import { CssBlocGenService } from "@xlayers/css-blocgen";
+import { ImageService, SymbolService, TextService } from "@xlayers/sketch-lib";
+import { SvgBlocGenService } from "@xlayers/svg-blocgen";
 
 @Component({
   tag: "xlayers-viewer-layer",
   styleUrl: "xlayers-viewer-layer.css",
-  shadow: true
+  scoped: true
 })
 export class XlayersViewerLayer {
   @Prop() data: SketchMSData;
   @Prop() layer: SketchMSLayer;
 
-  @Prop() wireframe = false;
+  @Prop() wireframe = true;
   @Prop() level = 0;
 
-  @State() isWireframe = false;
   @State() is3dView = false;
 
   @Element() element: HTMLElement;
 
-  borderWidth = 1;
-  offset3d = 20;
+  @State() borderWidth = 1;
+  @State() offset3d = 20;
 
-  texts: string[] = [];
-  images: string[] = [];
-  layers: SketchMSLayer[] = [];
+  @State() texts: string[] = [];
+  @State() images: string[] = [];
+  @State() layers: SketchMSLayer[] = [];
 
   private text: TextService = new TextService();
   private cssBlocGen: CssBlocGenService = new CssBlocGenService();
@@ -42,16 +33,12 @@ export class XlayersViewerLayer {
   private image: ImageService = new ImageService();
 
   componentWillLoad() {
-    this.wireframe = this.isWireframe;
-
     if (this.is3dView) {
       this.enable3dStyle();
     } else {
       this.disable3dStyle();
     }
-  }
 
-  componentDidRender() {
     this.loadText();
     this.applyHighlightStyles();
     this.applyLayerStyles();
@@ -59,6 +46,8 @@ export class XlayersViewerLayer {
     this.loadShapes();
     this.loadLayers();
   }
+
+  componentWillRender() {}
 
   loadText() {
     if (this.text.identify(this.layer)) {
@@ -71,7 +60,6 @@ export class XlayersViewerLayer {
 
   applyHighlightStyles() {
     const elementPosition = this.element.getBoundingClientRect();
-
     this.element.style.borderWidth = `${this.borderWidth}px`;
     this.element.style.left = `${elementPosition.left - this.borderWidth}px`;
     this.element.style.top = `${elementPosition.top - this.borderWidth}px`;
@@ -81,7 +69,7 @@ export class XlayersViewerLayer {
     if (this.cssBlocGen.identify(this.layer)) {
       const rules = this.cssBlocGen.context(this.layer).rules;
       Object.entries(rules).forEach(([property, value]) => {
-        this.element[property] = value;
+        this.element.style[property] = value;
       });
     }
   }
@@ -133,11 +121,6 @@ export class XlayersViewerLayer {
     this.element.style.transform = `none`;
   }
 
-  @Listen("selectedLayer")
-  selectLayer(event) {
-    console.log("layer selected");
-  }
-
   render() {
     return (
       <Host>
@@ -149,7 +132,7 @@ export class XlayersViewerLayer {
         >
           {this.layers.map(layer => (
             <xlayers-viewer-layer
-              class={"layer" + (this.wireframe ? "wireframe" : "")}
+              class={"layer " + (this.wireframe ? "wireframe" : "")}
               data={this.data}
               layer={layer}
               level={this.level + 1}
@@ -157,11 +140,15 @@ export class XlayersViewerLayer {
               data-id={layer.do_objectID}
               data-name={layer.name}
               data-class={layer._class}
+              style={{
+                width: layer.frame.width + "px",
+                height: layer.frame.height + "px"
+              }}
             />
           ))}
 
           {this.texts.map(text => (
-            <span>{{ text }}</span>
+            <span>{text}</span>
           ))}
 
           {this.images.map(image => (

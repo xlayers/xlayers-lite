@@ -1,14 +1,29 @@
-const Buffer = require('buffer/').Buffer;
-const BigInt = window['BigInt'] || require('big-integer');
+import { Buffer } from "buffer";
 
-type BufferEncoding = 'hex' | 'utf8' | 'utf-8' | 'ascii' | 'latin1' | 'binary' | 'base64' | 'ucs2' | 'ucs-2' | 'utf16le' | 'utf-16le';
+// @ts-ignore
+import { BigInteger } from "big-integer";
+// @ts-ignore
+const BigInt = window["BigInt"] || BigInteger;
+
+type BufferEncoding =
+  | "hex"
+  | "utf8"
+  | "utf-8"
+  | "ascii"
+  | "latin1"
+  | "binary"
+  | "base64"
+  | "ucs2"
+  | "ucs-2"
+  | "utf16le"
+  | "utf-16le";
 
 // @ts-ignore
 class PropertyListFormatException extends Error {
   constructor(message) {
     super();
     Error.captureStackTrace(this, this.constructor);
-    this.name = 'PropertyListFormatException';
+    this.name = "PropertyListFormatException";
     this.message = message;
   }
 }
@@ -18,7 +33,7 @@ class UnsupportedEncodingException extends Error {
   constructor(message) {
     super();
     Error.captureStackTrace(this, this.constructor);
-    this.name = 'UnsupportedEncodingException';
+    this.name = "UnsupportedEncodingException";
     this.message = message;
   }
 }
@@ -28,7 +43,7 @@ class UnsupportedOperationException extends Error {
   constructor(message) {
     super();
     Error.captureStackTrace(this, this.constructor);
-    this.name = 'UnsupportedOperationException';
+    this.name = "UnsupportedOperationException";
     this.message = message;
   }
 }
@@ -38,13 +53,19 @@ class IllegalArgumentException extends Error {
   constructor(message) {
     super();
     Error.captureStackTrace(this, this.constructor);
-    this.name = 'IllegalArgumentException';
+    this.name = "IllegalArgumentException";
     this.message = message;
   }
 }
 export class UID {
-  // @ts-ignore
-  constructor(private value: number, private buffer: Buffer, private string: string) {}
+  constructor(
+    // @ts-ignore
+    private value: number,
+    // @ts-ignore
+    private buffer: Buffer,
+    // @ts-ignore
+    private string: string
+  ) {}
 }
 
 /*
@@ -172,15 +193,21 @@ export class BplistService {
 
     const magic = this.buffer2String(data, 0, 8);
 
-    if (!magic.startsWith('bplist') && !magic.startsWith('plist')) {
+    if (!magic.startsWith("bplist") && !magic.startsWith("plist")) {
       // throw new IllegalArgumentException(`'The given data is no binary property list. Wrong magic bytes: ${magic}`);
-      console.error(`'The given data is no binary property list. Wrong magic bytes: ${magic}`);
+      console.error(
+        `'The given data is no binary property list. Wrong magic bytes: ${magic}`
+      );
     }
 
     /*
      * Handle trailer, last 32 bytes of the file
      */
-    const trailer: Buffer = this.copyOfRange(this.bytes, this.bytes.length - 32, this.bytes.length);
+    const trailer: Buffer = this.copyOfRange(
+      this.bytes,
+      this.bytes.length - 32,
+      this.bytes.length
+    );
 
     // 6 null bytes (index 0 to 5)
 
@@ -191,18 +218,27 @@ export class BplistService {
     const offsetTableOffset: number = this.parseUnsignedInt(trailer, 24, 32);
 
     /*
-       * Handle offset table
-       */
+     * Handle offset table
+     */
     this.offsetTable = new Array(numObjects);
 
     for (let i = 0; i < numObjects; i++) {
-      this.offsetTable[i] = this.parseUnsignedInt(this.bytes, offsetTableOffset + i * offsetSize, offsetTableOffset + (i + 1) * offsetSize);
+      this.offsetTable[i] = this.parseUnsignedInt(
+        this.bytes,
+        offsetTableOffset + i * offsetSize,
+        offsetTableOffset + (i + 1) * offsetSize
+      );
     }
 
     return this.visit(topObject);
   }
 
-  private buffer2String(bytes: Buffer, startIndex: number, endIndex: number, encoding: BufferEncoding = 'utf-8') {
+  private buffer2String(
+    bytes: Buffer,
+    startIndex: number,
+    endIndex: number,
+    encoding: BufferEncoding = "utf-8"
+  ) {
     return this.copyOfRange(bytes, startIndex, endIndex).toString(encoding);
   }
 
@@ -231,7 +267,11 @@ export class BplistService {
    * @param endIndex End of the unsigned int in the byte array.
    * @return The unsigned integer represented by the given bytes.
    */
-  private parseUnsignedInt(bytes: Buffer, startIndex: number, endIndex: number) {
+  private parseUnsignedInt(
+    bytes: Buffer,
+    startIndex: number,
+    endIndex: number
+  ) {
     let l = 0;
     for (let i = startIndex; i < endIndex; i++) {
       l <<= 8;
@@ -242,7 +282,11 @@ export class BplistService {
     return l;
   }
 
-  private calculateUtf8StringLength(bytes: Buffer, offset: number, numCharacters: number) {
+  private calculateUtf8StringLength(
+    bytes: Buffer,
+    offset: number,
+    numCharacters: number
+  ) {
     let length = 0;
     for (let i = 0; i < numCharacters; i++) {
       const tempOffset = offset + length;
@@ -263,13 +307,20 @@ export class BplistService {
         }
         length += 2;
       } else if (bytes[tempOffset] < 0xf0) {
-        if ((bytes[tempOffset + 1] & 0xc0) !== 0x80 || (bytes[tempOffset + 2] & 0xc0) !== 0x80) {
+        if (
+          (bytes[tempOffset + 1] & 0xc0) !== 0x80 ||
+          (bytes[tempOffset + 2] & 0xc0) !== 0x80
+        ) {
           // Invalid continuation byte, fall back to length = number of characters
           return numCharacters;
         }
         length += 3;
       } else if (bytes[tempOffset] < 0xf5) {
-        if ((bytes[tempOffset + 1] & 0xc0) !== 0x80 || (bytes[tempOffset + 2] & 0xc0) !== 0x80 || (bytes[tempOffset + 3] & 0xc0) !== 0x80) {
+        if (
+          (bytes[tempOffset + 1] & 0xc0) !== 0x80 ||
+          (bytes[tempOffset + 2] & 0xc0) !== 0x80 ||
+          (bytes[tempOffset + 3] & 0xc0) !== 0x80
+        ) {
           // Invalid continuation byte, fall back to length = number of characters
           return numCharacters;
         }
@@ -292,15 +343,23 @@ export class BplistService {
       const int_type = this.bytes[offset + 1];
       const intType = (int_type & 0xf0) >> 4;
       if (intType !== 0x1) {
-        console.warn(`BinaryPropertyListParser: Length integer has an unexpected type ${intType}. Attempting to parse anyway...`);
+        console.warn(
+          `BinaryPropertyListParser: Length integer has an unexpected type ${intType}. Attempting to parse anyway...`
+        );
       }
       const intInfo = int_type & 0x0f;
       const intLength = Math.pow(2, intInfo);
       offsetValue = 2 + intLength;
       if (intLength < 3) {
-        lengthValue = this.parseUnsignedInt(this.bytes, offset + 2, offset + 2 + intLength);
+        lengthValue = this.parseUnsignedInt(
+          this.bytes,
+          offset + 2,
+          offset + 2 + intLength
+        );
       } else {
-        lengthValue = new BigInt(this.copyOfRange(this.bytes, offset + 2, offset + 2 + intLength)).intValue();
+        lengthValue = new BigInt(
+          this.copyOfRange(this.bytes, offset + 2, offset + 2 + intLength)
+        ).intValue();
       }
     }
     return [lengthValue, offsetValue];
@@ -330,21 +389,21 @@ export class BplistService {
           case 0x0: {
             // null object (v1.0 and later)
             return {
-              $key: 'null',
+              $key: "null",
               $value: null
             };
           }
           case 0x8: {
             // false
             return {
-              $key: 'false',
+              $key: "false",
               $value: false
             };
           }
           case 0x9: {
             // true
             return {
-              $key: 'true',
+              $key: "true",
               $value: true
             };
           }
@@ -352,26 +411,34 @@ export class BplistService {
             // URL with no base URL (v1.0 and later)
             // TODO Implement binary URL parsing (not yet even implemented in Core Foundation as of revision 855.17)
             // throw new UnsupportedOperationException(
-            console.error(`The given binary property list contains a URL object. Parsing of this object type is not yet implemented.`);
+            console.error(
+              `The given binary property list contains a URL object. Parsing of this object type is not yet implemented.`
+            );
             break;
           }
           case 0xd: {
             // URL with base URL (v1.0 and later)
             // TODO Implement binary URL parsing (not yet even implemented in Core Foundation as of revision 855.17)
             // throw new UnsupportedOperationException(
-            console.error(`The given binary property list contains a URL object. Parsing of this object type is not yet implemented.`);
+            console.error(
+              `The given binary property list contains a URL object. Parsing of this object type is not yet implemented.`
+            );
             break;
           }
           case 0xe: {
             // 16-byte UUID (v1.0 and later)
             // TODO Implement binary UUID parsing (not yet even implemented in Core Foundation as of revision 855.17)
             // throw new UnsupportedOperationException(
-            console.error(`The given binary property list contains a UUID object. Parsing of this object type is not yet implemented.`);
+            console.error(
+              `The given binary property list contains a UUID object. Parsing of this object type is not yet implemented.`
+            );
             break;
           }
           default: {
             // throw new PropertyListFormatException(`The given binary property list contains an object of unknown type (${objType})`);
-            console.error(`The given binary property list contains an object of unknown type (${objType})`);
+            console.error(
+              `The given binary property list contains an object of unknown type (${objType})`
+            );
           }
         }
         break;
@@ -379,20 +446,28 @@ export class BplistService {
       case 0x1: {
         // integer
         const len = Math.pow(2, objInfo);
-        const value = this.buffer2String(this.bytes, offset + 1, offset + 1 + len);
+        const value = this.buffer2String(
+          this.bytes,
+          offset + 1,
+          offset + 1 + len
+        );
 
         return {
-          $key: 'integer',
+          $key: "integer",
           $value: parseInt(value, 10)
         };
       }
       case 0x2: {
         // real
         const len = Math.pow(2, objInfo);
-        const value = this.buffer2String(this.bytes, offset + 1, offset + 1 + len);
+        const value = this.buffer2String(
+          this.bytes,
+          offset + 1,
+          offset + 1 + len
+        );
 
         return {
-          $key: 'float',
+          $key: "float",
           $value: parseFloat(value)
         };
       }
@@ -400,40 +475,62 @@ export class BplistService {
         // Date
         if (objInfo !== 0x3) {
           // throw new PropertyListFormatException(`The given binary property list contains a date object of an unknown type (${objInfo})`);
-          console.error(`The given binary property list contains a date object of an unknown type (${objInfo})`);
+          console.error(
+            `The given binary property list contains a date object of an unknown type (${objInfo})`
+          );
         }
         return {
-          $key: 'date',
-          $value: new Date(this.buffer2String(this.bytes, offset + 1, offset + 9))
+          $key: "date",
+          $value: new Date(
+            this.buffer2String(this.bytes, offset + 1, offset + 9)
+          )
         };
       }
       case 0x4: {
         // Data: interpreted as Base-64 encoded
-        const lengthAndOffset: number[] = this.readLengthAndOffset(objInfo, offset);
+        const lengthAndOffset: number[] = this.readLengthAndOffset(
+          objInfo,
+          offset
+        );
         const len = lengthAndOffset[0];
         const dataOffset = lengthAndOffset[1];
-        const value = this.buffer2String(this.bytes, offset + dataOffset, offset + dataOffset + len);
+        const value = this.buffer2String(
+          this.bytes,
+          offset + dataOffset,
+          offset + dataOffset + len
+        );
 
         return {
-          $key: 'data',
+          $key: "data",
           $value: value
         };
       }
       case 0x5: {
         // ASCII string
-        const lengthAndOffset: number[] = this.readLengthAndOffset(objInfo, offset);
+        const lengthAndOffset: number[] = this.readLengthAndOffset(
+          objInfo,
+          offset
+        );
         const len = lengthAndOffset[0]; // Each character is 1 byte
         const strOffset = lengthAndOffset[1];
-        const value = this.buffer2String(this.bytes, offset + strOffset, offset + strOffset + len, 'ascii');
+        const value = this.buffer2String(
+          this.bytes,
+          offset + strOffset,
+          offset + strOffset + len,
+          "ascii"
+        );
 
         return {
-          $key: 'ascii',
+          $key: "ascii",
           $value: value
         };
       }
       case 0x6: {
         // UTF-16-BE string
-        const lengthAndOffset: number[] = this.readLengthAndOffset(objInfo, offset);
+        const lengthAndOffset: number[] = this.readLengthAndOffset(
+          objInfo,
+          offset
+        );
         const characters = lengthAndOffset[0];
         const strOffset = lengthAndOffset[1];
         // UTF-16 characters can have variable length, but the Core Foundation reference implementation
@@ -442,30 +539,46 @@ export class BplistService {
         const len = characters * 2;
         const startIndex = strOffset;
         const endIndex = offset + strOffset + len;
-        const value = this.buffer2String(this.bytes, startIndex, (startIndex + offset) * 2 ** 8 + endIndex, 'base64');
+        const value = this.buffer2String(
+          this.bytes,
+          startIndex,
+          (startIndex + offset) * 2 ** 8 + endIndex,
+          "base64"
+        );
         // const value = this.buffer2String(this.bytes, offset + strOffset, offset + strOffset + length, 'base64');
 
         if (this.isBase64(value)) {
           return this.parse64Content(value);
         } else {
           return {
-            $key: 'utf-16',
+            $key: "utf-16",
             $value: value
           };
         }
       }
       case 0x7: {
         // UTF-8 string (v1.0 and later)
-        const lengthAndOffset: number[] = this.readLengthAndOffset(objInfo, offset);
+        const lengthAndOffset: number[] = this.readLengthAndOffset(
+          objInfo,
+          offset
+        );
         const strOffset = lengthAndOffset[1];
         const characters = lengthAndOffset[0];
         // UTF-8 characters can have variable length, so we need to calculate the byte length dynamically
         // by reading the UTF-8 characters one by one
-        const len = this.calculateUtf8StringLength(this.bytes, offset + strOffset, characters);
-        const value = this.buffer2String(this.bytes, offset + strOffset, offset + strOffset + len);
+        const len = this.calculateUtf8StringLength(
+          this.bytes,
+          offset + strOffset,
+          characters
+        );
+        const value = this.buffer2String(
+          this.bytes,
+          offset + strOffset,
+          offset + strOffset + len
+        );
 
         return {
-          $key: 'utf-8',
+          $key: "utf-8",
           $value: value
         };
       }
@@ -479,13 +592,16 @@ export class BplistService {
         );
 
         return {
-          $key: 'uid',
+          $key: "uid",
           $value: value
         };
       }
       case 0xa: {
         // Array
-        const lengthAndOffset: number[] = this.readLengthAndOffset(objInfo, offset);
+        const lengthAndOffset: number[] = this.readLengthAndOffset(
+          objInfo,
+          offset
+        );
         const len = lengthAndOffset[0];
         const arrayOffset = lengthAndOffset[1];
 
@@ -500,13 +616,16 @@ export class BplistService {
         }
 
         return {
-          $key: 'array',
+          $key: "array",
           $value: value
         };
       }
       case 0xb: {
         // Ordered set (v1.0 and later)
-        const lengthAndOffset: number[] = this.readLengthAndOffset(objInfo, offset);
+        const lengthAndOffset: number[] = this.readLengthAndOffset(
+          objInfo,
+          offset
+        );
         const len = lengthAndOffset[0];
         const contentOffset = lengthAndOffset[1];
 
@@ -521,13 +640,16 @@ export class BplistService {
         }
 
         return {
-          $key: 'order-set',
+          $key: "order-set",
           $value: value
         };
       }
       case 0xc: {
         // Set (v1.0 and later)
-        const lengthAndOffset: number[] = this.readLengthAndOffset(objInfo, offset);
+        const lengthAndOffset: number[] = this.readLengthAndOffset(
+          objInfo,
+          offset
+        );
         const len = lengthAndOffset[0];
         const contentOffset = lengthAndOffset[1];
 
@@ -542,13 +664,16 @@ export class BplistService {
         }
 
         return {
-          $key: 'set',
+          $key: "set",
           $value: value
         };
       }
       case 0xd: {
         // Dictionary
-        const lengthAndOffset: number[] = this.readLengthAndOffset(objInfo, offset);
+        const lengthAndOffset: number[] = this.readLengthAndOffset(
+          objInfo,
+          offset
+        );
         const len = lengthAndOffset[0];
         const contentOffset = lengthAndOffset[1];
 
@@ -561,8 +686,14 @@ export class BplistService {
           );
           const valRef = this.parseUnsignedInt(
             this.bytes,
-            offset + contentOffset + len * this.objectRefSize + i * this.objectRefSize,
-            offset + contentOffset + len * this.objectRefSize + (i + 1) * this.objectRefSize
+            offset +
+              contentOffset +
+              len * this.objectRefSize +
+              i * this.objectRefSize,
+            offset +
+              contentOffset +
+              len * this.objectRefSize +
+              (i + 1) * this.objectRefSize
           );
           const key = this.visit(keyRef);
           const val = this.visit(valRef);
@@ -570,18 +701,22 @@ export class BplistService {
         }
 
         return {
-          $key: 'dictionary',
+          $key: "dictionary",
           $value: value
         };
       }
       default: {
         // throw new PropertyListFormatException(`The given binary property list contains an object of unknown type (${objType})`);
-        console.error(`The given binary property list contains an object of unknown type (${objType})`);
+        console.error(
+          `The given binary property list contains an object of unknown type (${objType})`
+        );
       }
     }
   }
 
   private isBase64(value: string) {
-    return /^([\+\/-9A-Za-z]{4})*([\+\/-9A-Za-z]{4}|[\+\/-9A-Za-z]{3}=|[\+\/-9A-Za-z]{2}==)$/u.test(value);
+    return /^([\+\/-9A-Za-z]{4})*([\+\/-9A-Za-z]{4}|[\+\/-9A-Za-z]{3}=|[\+\/-9A-Za-z]{2}==)$/u.test(
+      value
+    );
   }
 }

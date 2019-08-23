@@ -4,7 +4,7 @@ import { EventEmitter } from "events";
 @Component({
   tag: "xlayers-upload",
   styleUrl: "xlayers-upload.css",
-  shadow: true
+  scoped: true
 })
 export class XlayersUpload {
   @Event({
@@ -89,10 +89,6 @@ export class XlayersUpload {
   render() {
     return (
       <Host>
-        <section>
-          <b>Powered by <a href="xlayers.dev">xlayers.dev</a></b>
-        </section>
-
         <input
           ref={el => (this.fileBrowserRef = el)}
           type="file"
@@ -100,6 +96,24 @@ export class XlayersUpload {
         />
 
         <slot></slot>
+
+        <footer class="footer footer--full">
+          <span>
+            <a href="https://github.com/xlayers/xlayers/issues/new" target="__blank">Give us your feedback </a> ● 
+            <a href="https://opencollective.com/xlayers" target="__blank"> Support us </a>
+          </span>
+          <span>
+            <a href="https://twitter.com/xlayers_" target="__blank">
+              <img src="https://xlayers.app/assets/twitter.png" alt="Follow us on twitter" />
+            </a>
+            <a href="https://opencollective.com/xlayers" target="__blank">
+              <img src="https://xlayers.app/assets/github-circle.png" alt="Find us on Github" />
+            </a>
+          </span>
+          <span>
+            <a href="xlayers.dev">Powered by xLayers Lite</a>
+          </span>
+        </footer>
       </Host>
     );
   }

@@ -1,7 +1,7 @@
 :host {
   display: block;
   width: 100%;
-  height: calc(100% - 64px);
+  height: 100%;
   transform: none;
   transform-style: preserve-3d;
   transition: transform 1s;

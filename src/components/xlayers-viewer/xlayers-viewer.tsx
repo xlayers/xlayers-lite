@@ -4,7 +4,7 @@ import { SketchService } from "@xlayers/core";
 @Component({
   tag: "xlayers-viewer",
   styleUrl: "xlayers-viewer.css",
-  shadow: true
+  scoped: true
 })
 export class XlayersViewer {
   private sketchService: SketchService = new SketchService();

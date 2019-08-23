@@ -1,9 +1,9 @@
-import { Component, Host, h, Prop, State, Element } from "@stencil/core";
+import { Component, Host, h, Prop, State, Element, Watch } from "@stencil/core";
 
 @Component({
   tag: "xlayers-viewer-canvas",
   styleUrl: "xlayers-viewer-canvas.css",
-  shadow: true
+  scoped: true
 })
 export class XlayersViewerCanvas {
   canvas!: HTMLDivElement;
@@ -32,13 +32,15 @@ export class XlayersViewerCanvas {
       this.currentZoomLevel = this.zoomLevel;
     }
 
+    if (this.data) {
+      this.currentPage = this.data.pages[0];
+    }
+  }
+
+  @Watch("data")
+  updateCurrentPage() {
     this.currentPage = this.data.pages[0];
   }
-
-  componentWillUpdate() {
-    console.log(this.data);
-  }
-
 
   formatTransformStyle(existingTransformStyle: string, zoomLevel: number) {
     const scaleStyleRegex = /(\([ ]?[\d]+(\.[\d]+)?[ ]?(,[ ]?[\d]+(\.[\d]+)?[ ]?)?\))/gim;
@@ -51,27 +53,31 @@ export class XlayersViewerCanvas {
   }
 
   render() {
-    return (
-      <Host>
-        {this.data.pages.map(page => (
-          <div
-            class={
-              "canvas" + (page.do_objectID == this.currentPage.do_objectID)
-                ? "selected"
-                : ""
-            }
-            ref={el => (this.canvas = el)}
-          >
-            <xlayers-viewer-page
-              data={this.data}
-              page={page}
-              data-id={page.do_objectID}
-              data-name={page.name}
-              data-class={page._class}
-            />
-          </div>
-        ))}
-      </Host>
-    );
+    if (this.data) {
+      return (
+        <Host>
+          {this.data.pages.map(page => (
+            <div
+              class={
+                "canvas " +
+                (page.do_objectID == this.currentPage.do_objectID
+                  ? "selected"
+                  : "")
+              }
+              ref={el => (this.canvas = el)}
+            >
+              <xlayers-viewer-page
+                data={this.data}
+                page={page}
+                data-id={page.do_objectID}
+                data-name={page.name}
+                data-class={page._class}
+              />
+            </div>
+          ))}
+        </Host>
+      );
+    }
+    return <Host />;
   }
 }

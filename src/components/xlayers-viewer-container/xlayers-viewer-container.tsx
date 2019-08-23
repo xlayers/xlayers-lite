@@ -1,9 +1,9 @@
-import { Component, h, Host, Listen, Prop, State } from "@stencil/core";
+import { Component, h, Host, Prop } from "@stencil/core";
 
 @Component({
   tag: "xlayers-viewer-container",
   styleUrl: "xlayers-viewer-container.css",
-  shadow: true
+  scoped: true
 })
 export class XlayersViewerContainer {
   element!: HTMLElement;
@@ -13,17 +13,18 @@ export class XlayersViewerContainer {
   })
   data: SketchMSData;
 
+  componentWillLoad() {
+    // this.data.map()
+  }
+
   render() {
-    if (this.data) {
-      return (
-        <div class="layers-container">
-          <xlayers-viewer-canvas
-            ref={el => (this.element = el)}
-            data={this.data}
-          />
-        </div>
-      );
-    }
-    return <Host />;
+    return (
+      <div class="layers-container">
+        <xlayers-viewer-canvas
+          ref={el => (this.element = el)}
+          data={this.data}
+        />
+      </div>
+    );
   }
 }

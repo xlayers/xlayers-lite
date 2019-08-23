@@ -1,4 +1,5 @@
 import { SketchIngestorService } from "@xlayers/sketch-ingestor";
+import { WebBlocGenService } from "@xlayers/web-blocgen";
 
 export interface SketchMSData {
   pages: SketchMSPage[];
@@ -10,9 +11,14 @@ export interface SketchMSData {
 
 export class SketchService {
   private sketchIngestor: SketchIngestorService = new SketchIngestorService();
+  private webBlocGen: WebBlocGenService = new WebBlocGenService();
   constructor() {}
 
   async loadSketchFile(file: File) {
-    return await this.sketchIngestor.process(file);
+    const data = await this.sketchIngestor.process(file);
+    data.pages.forEach(page => {
+      this.webBlocGen.compute(page, data);
+    });
+    return data;
   }
 }

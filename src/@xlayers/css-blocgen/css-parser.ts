@@ -1,6 +1,6 @@
 import { StyleService, SymbolService, LayerService } from "@xlayers/sketch-lib";
 import { CssContextService } from "./css-context";
-import { CssBlocGenOptions } from "./css-blocgen";
+import { CssBlocGenOptions } from "./css-blocgen.d";
 
 export class CssParserService {
   private styleHelperService: StyleService = new StyleService();
