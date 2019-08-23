@@ -10,15 +10,22 @@ export class XlayersViewer {
   private sketchService: SketchService = new SketchService();
   @Prop() src!: string;
   @Prop() mode: "2d" | "3d" = "2d";
+  @Prop() zoom: number = 1;
   @Prop() wireframe: boolean = false;
   @State() data: SketchMSData;
   currentPage = {};
+  isError = false;
 
   async componentWillLoad() {
     if (this.src) {
-      const res = await fetch(this.src);
-      const fileBlob = await res.blob();
-      this.data = await this.sketchService.loadSketchFile(fileBlob);
+      try {
+        const res = await fetch(this.src);
+        const fileBlob = await res.blob();
+        this.data = await this.sketchService.loadSketchFile(fileBlob);
+      }
+      catch(error) {
+        this.isError = true;
+      }
     }
   }
 
@@ -35,7 +42,16 @@ export class XlayersViewer {
     return (
       <Host>
         <x-layers-upload>
-          <x-layers-container data={this.data} mode={this.mode} wireframe={this.wireframe} />
+          { this.isError 
+            ? <span class="error">File {this.src} is not accessible.</span>
+            : <span></span>
+          }
+          <x-layers-container
+            zoom={this.zoom}
+            data={this.data}
+            mode={this.mode}
+            wireframe={this.wireframe}
+          />
         </x-layers-upload>
       </Host>
     );

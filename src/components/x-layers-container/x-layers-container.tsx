@@ -8,12 +8,9 @@ import { Component, h, Prop } from "@stencil/core";
 export class XlayersViewerContainer {
   element!: HTMLElement;
 
-  @Prop({
-    mutable: true
-  })
-  data: SketchMSData;
+  @Prop() data: SketchMSData;
 
-  @Prop() mode: "2d" | "3d" = "2d";
+  @Prop() mode: "2d" | "3d";
   @Prop() zoom: number;
   @Prop() wireframe: boolean;
 

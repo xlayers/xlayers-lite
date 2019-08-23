@@ -13,6 +13,7 @@ export namespace Components {
     'mode': "2d" | "3d";
     'src': string;
     'wireframe': boolean;
+    'zoom': number;
   }
   interface XLayersCanvas {
     'data': SketchMSData;
@@ -28,13 +29,14 @@ export namespace Components {
   }
   interface XLayersLayer {
     'data': SketchMSData;
+    'depth': number;
     'layer': SketchMSLayer;
-    'level': number;
+    'mode': "2d" | "3d";
     'wireframe': boolean;
   }
   interface XLayersPage {
     'data': SketchMSData;
-    'level': number;
+    'mode': "2d" | "3d";
     'page': SketchMSPage;
     'wireframe': boolean;
   }
@@ -94,6 +96,7 @@ declare namespace LocalJSX {
     'mode'?: "2d" | "3d";
     'src': string;
     'wireframe'?: boolean;
+    'zoom'?: number;
   }
   interface XLayersCanvas extends JSXBase.HTMLAttributes<HTMLXLayersCanvasElement> {
     'data'?: SketchMSData;
@@ -109,13 +112,14 @@ declare namespace LocalJSX {
   }
   interface XLayersLayer extends JSXBase.HTMLAttributes<HTMLXLayersLayerElement> {
     'data'?: SketchMSData;
+    'depth'?: number;
     'layer'?: SketchMSLayer;
-    'level'?: number;
+    'mode'?: "2d" | "3d";
     'wireframe'?: boolean;
   }
   interface XLayersPage extends JSXBase.HTMLAttributes<HTMLXLayersPageElement> {
     'data'?: SketchMSData;
-    'level'?: number;
+    'mode'?: "2d" | "3d";
     'page'?: SketchMSPage;
     'wireframe'?: boolean;
   }

@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop } from "@stencil/core";
+import { Component, h, Host, Prop, Element } from "@stencil/core";
 
 @Component({
   tag: "x-layers-page",
@@ -10,10 +10,18 @@ export class XlayersViewerPage {
   @Prop() page: SketchMSPage;
 
   @Prop() wireframe: boolean;
-  @Prop() level = 0;
+  @Prop() mode: "2d" | "3d";
+
+  @Element() element: HTMLElement;
 
   componentWillLoad() {
+    if (this.mode === "3d") {
+      this.element.classList.add("is-3d-view");
+    } else {
+      this.element.classList.remove("is-3d-view");
+    }
   }
+
   render() {
     return (
       <Host>
@@ -22,7 +30,8 @@ export class XlayersViewerPage {
             class={"layer " + (this.wireframe ? "wireframe" : "")}
             data={this.data}
             layer={layer}
-            level={1}
+            depth={1}
+            mode={this.mode}
             wireframe={this.wireframe}
             data-id={layer.do_objectID}
             data-name={layer.name}

@@ -6,36 +6,35 @@ import { Component, Host, h, Prop, State, Element, Watch } from "@stencil/core";
   scoped: true
 })
 export class XlayersViewerCanvas {
-  canvas!: HTMLDivElement;
+  canvasRef: HTMLDivElement;
   @Prop() data: SketchMSData;
 
-  @State() currentPage: SketchMSPage = null;
   @Prop() mode: "2d" | "3d";
   @Prop() wireframe: boolean;
   @Prop() zoom: number;
 
+  @State() currentPage: SketchMSPage = null;
   @Element() element: HTMLElement;
 
   currentZoomLevel = 1;
 
   componentWillLoad() {
-    if (this.mode === "2d") {
+    if (this.mode === "3d") {
       this.element.classList.add("is-3d-view");
     } else {
       this.element.classList.remove("is-3d-view");
     }
+    this.currentPage = this.data.pages[0];
+  }
 
-    if (this.canvas) {
-      this.canvas.style.transform = this.formatTransformStyle(
-        this.canvas.style.transform,
-        this.zoom
-      );
-      this.currentZoomLevel = this.zoom;
-    }
-
-    if (this.data) {
-      this.currentPage = this.data.pages[0];
-    }
+  // use async to wait for canvasRef to be defined
+  async componentDidLoad() {
+    console.log(this.currentZoomLevel);
+    this.canvasRef.style.transform = this.formatTransformStyle(
+      this.canvasRef.style.transform,
+      this.zoom
+    );
+    this.currentZoomLevel = this.zoom;
   }
 
   @Watch("data")
@@ -65,11 +64,12 @@ export class XlayersViewerCanvas {
                   ? "selected"
                   : "")
               }
-              ref={el => (this.canvas = el)}
+              ref={el => (this.canvasRef = el)}
             >
               <x-layers-page
                 data={this.data}
                 page={page}
+                mode={this.mode}
                 wireframe={this.wireframe}
                 data-id={page.do_objectID}
                 data-name={page.name}

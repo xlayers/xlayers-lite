@@ -15,3 +15,17 @@ x-layers-container {
   background-size: 130px;
   position: absolute;
 }
+
+span.error {
+  border: 1px solid red;
+  padding: 4px;
+  background: #ff2a2a;
+  width: calc(100% - 10px);
+  color: white;
+  display: block;
+  position: absolute;
+  top: 1px;
+  z-index: 99999;
+  left: 1px;
+  text-align: center;
+}

@@ -12,10 +12,9 @@ export class XlayersViewerLayer {
   @Prop() data: SketchMSData;
   @Prop() layer: SketchMSLayer;
 
-  @Prop() wireframe = true;
-  @Prop() level = 0;
-
-  @State() is3dView = false;
+  @Prop() wireframe: boolean;
+  @Prop() depth: number;
+  @Prop() mode: "2d" | "3d";
 
   @Element() element: HTMLElement;
 
@@ -33,21 +32,19 @@ export class XlayersViewerLayer {
   private image: ImageService = new ImageService();
 
   componentWillLoad() {
-    if (this.is3dView) {
-      this.enable3dStyle();
-    } else {
-      this.disable3dStyle();
-    }
-
     this.loadText();
     this.applyHighlightStyles();
     this.applyLayerStyles();
     this.loadImage();
     this.loadShapes();
     this.loadLayers();
-  }
 
-  componentWillRender() {}
+    if (this.mode === "3d") {
+      this.enable3dStyle();
+    } else {
+      this.disable3dStyle();
+    }
+  }
 
   loadText() {
     if (this.text.identify(this.layer)) {
@@ -112,12 +109,14 @@ export class XlayersViewerLayer {
   }
 
   enable3dStyle() {
+    this.element.classList.add("is-3d-view");
     this.element.style.transform = `translateZ(${(
-      this.level * this.offset3d
+      this.depth * this.offset3d
     ).toFixed(3)}px)`;
   }
 
   disable3dStyle() {
+    this.element.classList.remove("is-3d-view");
     this.element.style.transform = `none`;
   }
 
@@ -135,7 +134,8 @@ export class XlayersViewerLayer {
               class={"layer " + (this.wireframe ? "wireframe" : "")}
               data={this.data}
               layer={layer}
-              level={this.level + 1}
+              depth={this.depth + 1}
+              mode={this.mode}
               wireframe={this.wireframe}
               data-id={layer.do_objectID}
               data-name={layer.name}
