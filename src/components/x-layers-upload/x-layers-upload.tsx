@@ -14,7 +14,6 @@ export class XlayersUpload {
 
   fileBrowserRef!: HTMLInputElement;
 
-  constructor() {}
 
   @Listen("drop", {
     passive: false
