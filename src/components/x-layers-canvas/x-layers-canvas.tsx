@@ -29,7 +29,6 @@ export class XlayersViewerCanvas {
 
   // use async to wait for canvasRef to be defined
   async componentDidLoad() {
-    console.log(this.currentZoomLevel);
     this.canvasRef.style.transform = this.formatTransformStyle(
       this.canvasRef.style.transform,
       this.zoom

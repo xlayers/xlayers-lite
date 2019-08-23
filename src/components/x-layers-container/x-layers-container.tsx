@@ -14,10 +14,6 @@ export class XlayersViewerContainer {
   @Prop() zoom: number;
   @Prop() wireframe: boolean;
 
-  componentWillLoad() {
-    // this.data.map()
-  }
-
   render() {
     return (
       <div class="layers-container">
