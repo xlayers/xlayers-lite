@@ -38,7 +38,9 @@ export class XlayersViewerCanvas {
 
   @Watch("data")
   updateCurrentPage() {
-    this.currentPage = this.data.pages[0];
+    if(this.data){
+      this.currentPage = this.data.pages[0];
+    }
   }
 
   formatTransformStyle(existingTransformStyle: string, zoomLevel: number) {
