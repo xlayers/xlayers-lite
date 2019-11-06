@@ -8,7 +8,7 @@ import { SketchService } from "@xlayers/core";
 })
 export class XlayersViewer {
   private sketchService: SketchService = new SketchService();
-  @Prop() src: string;
+  @Prop() src?: string;
   @Prop() mode: "2d" | "3d" = "2d";
   @Prop() zoom: number = 1;
   @Prop() wireframe: boolean = false;
@@ -17,9 +17,7 @@ export class XlayersViewer {
   isError = false;
 
   async componentWillLoad() {
-    if (this.src) {
-      await this.srcChanged();
-    }
+    await this.srcChanged();
   }
 
   @Watch("src")
