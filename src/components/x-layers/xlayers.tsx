@@ -9,7 +9,7 @@ import { SketchService } from "@xlayers/core";
 export class XlayersViewer {
   private sketchService: SketchService = new SketchService();
   @Prop() src?: string;
-  @Prop() mode: "2d" | "3d" = "2d";
+  @Prop() mode: "2d" | "3d" = "3d";
   @Prop() zoom: number = 1;
   @Prop() wireframe: boolean = false;
   @State() data: SketchMSData;
@@ -42,6 +42,11 @@ export class XlayersViewer {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  @Watch('mode')
+  modechanged(prev,curr){
+    console.error(prev,curr)
   }
 
   render() {

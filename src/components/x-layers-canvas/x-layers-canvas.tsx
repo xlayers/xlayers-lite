@@ -1,4 +1,13 @@
-import { Component, Host, h, Prop, State, Element, Watch } from "@stencil/core";
+import {
+  Component,
+  Host,
+  h,
+  Prop,
+  State,
+  Element,
+  Watch,
+  Listen
+} from "@stencil/core";
 
 @Component({
   tag: "x-layers-canvas",
@@ -19,12 +28,16 @@ export class XlayersViewerCanvas {
   currentZoomLevel = 1;
 
   componentWillLoad() {
+    this.currentPage = this.data.pages[0];
+  }
+
+  @Watch("mode")
+  modeChanged() {
     if (this.mode === "3d") {
       this.element.classList.add("is-3d-view");
     } else {
       this.element.classList.remove("is-3d-view");
     }
-    this.currentPage = this.data.pages[0];
   }
 
   // use async to wait for canvasRef to be defined
@@ -38,7 +51,7 @@ export class XlayersViewerCanvas {
 
   @Watch("data")
   updateCurrentPage() {
-    if(this.data){
+    if (this.data) {
       this.currentPage = this.data.pages[0];
     }
   }
