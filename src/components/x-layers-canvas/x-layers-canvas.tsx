@@ -28,6 +28,7 @@ export class XlayersViewerCanvas {
   currentZoomLevel = 1;
 
   componentWillLoad() {
+    this.modeChanged()
     this.currentPage = this.data.pages[0];
   }
 
