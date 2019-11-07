@@ -26,6 +26,7 @@ export class XlayersViewer {
       if (this.src) {
         const res = await fetch(this.src);
         const fileBlob = await res.blob();
+        this.data = null;
         this.data = await this.sketchService.loadSketchFile(fileBlob);
       } else {
         this.data = null;
