@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop, Element } from "@stencil/core";
+import { Component, h, Host, Prop, Element, Listen, Watch } from "@stencil/core";
 
 @Component({
   tag: "x-layers-page",
@@ -15,13 +15,18 @@ export class XlayersViewerPage {
   @Element() element: HTMLElement;
 
   componentWillLoad() {
+    this.modeChanged();
+  }
+
+
+  @Watch('mode')
+  modeChanged(){
     if (this.mode === "3d") {
       this.element.classList.add("is-3d-view");
     } else {
       this.element.classList.remove("is-3d-view");
     }
   }
-
   render() {
     return (
       <Host>

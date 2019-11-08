@@ -12,7 +12,7 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 export namespace Components {
   interface XLayers {
     'mode': "2d" | "3d";
-    'src': string;
+    'src'?: string;
     'wireframe': boolean;
     'zoom': number;
   }
@@ -95,7 +95,7 @@ declare global {
 declare namespace LocalJSX {
   interface XLayers {
     'mode'?: "2d" | "3d";
-    'src': string;
+    'src'?: string;
     'wireframe'?: boolean;
     'zoom'?: number;
   }
