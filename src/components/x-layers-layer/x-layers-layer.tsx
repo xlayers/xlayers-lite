@@ -1,4 +1,13 @@
-import { Component, Element, h, Host, Prop, State } from "@stencil/core";
+import {
+  Component,
+  Element,
+  h,
+  Host,
+  Prop,
+  State,
+  Listen,
+  Watch
+} from "@stencil/core";
 import { CssBlocGenService } from "@xlayers/css-blocgen";
 import { ImageService, SymbolService, TextService } from "@xlayers/sketch-lib";
 import { SvgBlocGenService } from "@xlayers/svg-blocgen";
@@ -38,12 +47,7 @@ export class XlayersViewerLayer {
     this.loadImage();
     this.loadShapes();
     this.loadLayers();
-
-    if (this.mode === "3d") {
-      this.enable3dStyle();
-    } else {
-      this.disable3dStyle();
-    }
+    this.modeChanged();
   }
 
   loadText() {
@@ -52,6 +56,15 @@ export class XlayersViewerLayer {
       if (content) {
         this.texts.push(content);
       }
+    }
+  }
+
+  @Watch("mode")
+  modeChanged() {
+    if (this.mode === "3d") {
+      this.enable3dStyle();
+    } else {
+      this.disable3dStyle();
     }
   }
 
