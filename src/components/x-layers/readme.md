@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property    | Attribute   | Description | Type           | Default     |
-| ----------- | ----------- | ----------- | -------------- | ----------- |
-| `mode`      | `mode`      |             | `"2d" \| "3d"` | `"2d"`      |
-| `src`       | `src`       |             | `string`       | `undefined` |
-| `wireframe` | `wireframe` |             | `boolean`      | `false`     |
-| `zoom`      | `zoom`      |             | `number`       | `1`         |
+| Property           | Attribute   | Description | Type           | Default     |
+| ------------------ | ----------- | ----------- | -------------- | ----------- |
+| `mode`             | `mode`      |             | `"2d" \| "3d"` | `"2d"`      |
+| `src` _(required)_ | `src`       |             | `string`       | `undefined` |
+| `wireframe`        | `wireframe` |             | `boolean`      | `false`     |
+| `zoom`             | `zoom`      |             | `number`       | `1`         |
 
 
 ## Dependencies
