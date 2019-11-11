@@ -1,6 +1,7 @@
-import { CssContextService } from "./css-context";
-import { CssBlocGenOptions } from "./css-blocgen";
-import { FormatService } from "@xlayers/sketch-lib";
+import { FormatService } from '@xlayers/sketch-lib';
+
+import { CssBlocGenOptions } from './css-blocgen';
+import { CssContextService } from './css-context';
 
 interface StyleList {
   className: string;
@@ -10,24 +11,23 @@ interface StyleList {
 export class CssRenderService {
   private format: FormatService = new FormatService();
   private cssContext: CssContextService = new CssContextService();
-  constructor() {}
 
   private indentationSymbol = `  `; // 2 spaces ftw
   // default host style
   private hostStyle = [
-    ":host {",
+    ':host {',
     `${this.indentationSymbol}display: block;`,
     `${this.indentationSymbol}position: relative;`,
-    "}",
-    ""
-  ].join("\n");
+    '}',
+    ''
+  ].join('\n');
 
   /**
    * This will parse the ast to return a optimized css stylesheet
    * @param current SketchMSLayer the ast based on sketch json
    */
   render(current: SketchMSLayer, options?: CssBlocGenOptions) {
-    const styles: Array<StyleList> = [];
+    const styles: StyleList[] = [];
     this.buildAstStyleSheet(styles, current);
     this.postProcessCss(styles);
     this.buildPseudoElementStyle(styles, current);
@@ -36,9 +36,9 @@ export class CssRenderService {
     const fileName = this.format.normalizeName(current.name);
     return [
       {
-        kind: "css",
+        kind: 'css',
         value: this.combineStyles(reGenerateStyleSheet),
-        language: "css",
+        language: 'css',
         uri: `${options.componentDir}/${fileName}.css`
       }
     ];
@@ -59,8 +59,8 @@ export class CssRenderService {
   private reGenerateStyleSheet(styles: StyleList[]) {
     return styles
       .filter(e => e.declarations.length > 0)
-      .map(cssStyle => this.generateCssStyle(cssStyle).join("\n"))
-      .join("\n");
+      .map(cssStyle => this.generateCssStyle(cssStyle).join('\n'))
+      .join('\n');
   }
 
   /**
@@ -70,9 +70,9 @@ export class CssRenderService {
   private generateCssStyle(style: StyleList): string[] {
     return [
       `.${style.className} {`,
-      style.declarations.map(rule => this.indentationSymbol + rule).join("\n"),
-      "}",
-      ""
+      style.declarations.map(rule => this.indentationSymbol + rule).join('\n'),
+      '}',
+      ''
     ];
   }
 
@@ -216,7 +216,7 @@ export class CssRenderService {
     duplicates: { className: string; key: string }[],
     stylesAst: StyleList[]
   ) {
-    const deDuplicateCssValues: Object = duplicates.reduce(
+    const deDuplicateCssValues: object = duplicates.reduce(
       (current, next, index, _array) => {
         if (index === 0 || !current.hasOwnProperty(next.className)) {
           current[next.className] = {
@@ -243,11 +243,6 @@ export class CssRenderService {
 
   /**
    * Helper function to set declaration for each css declaration
-   * @param stylesAst
-   * @param currentIndex
-   * @param currentDeclarationSet
-   * @param checkingDecIndex
-   * @param checkDeclarationPropertySet
    */
   private setValuesInAst(
     stylesAst: StyleList[],

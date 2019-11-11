@@ -1,11 +1,13 @@
-import JSZip from "jszip";
+import JSZip from 'jszip';
 
-const entryAsyncCheck = (entry: any): entry is { async: Function } => {
-  return !!entry && typeof entry === "object" && "async" in entry;
+type Functer = <T>(value: any) => Promise<T>;
+
+const entryAsyncCheck = (entry: any): entry is { async: Functer } => {
+  return !!entry && typeof entry === 'object' && 'async' in entry;
 };
 
-const jszipLoadAsync = (jszip: any): jszip is { loadAsync: Function } => {
-  return !!jszip && typeof jszip === "object" && "loadAsync" in jszip;
+const jszipLoadAsync = (jszip: any): jszip is { loadAsync: Functer } => {
+  return !!jszip && typeof jszip === 'object' && 'loadAsync' in jszip;
 };
 
 export class SketchIngestorService {
@@ -23,14 +25,14 @@ export class SketchIngestorService {
 
     await Promise.all(
       Object.entries(files).map(async ([relativePath, entry]) => {
-        if (relativePath === "previews/preview.png") {
+        if (relativePath === 'previews/preview.png') {
           return this.addPreviewImage(data, relativePath, entry);
-        } else if (relativePath.startsWith("images/")) {
+        } else if (relativePath.startsWith('images/')) {
           return this.addImage(data, relativePath, entry);
-        } else if (relativePath.startsWith("pages/")) {
+        } else if (relativePath.startsWith('pages/')) {
           return this.addPage(data, relativePath, entry);
         } else {
-          const objectName = relativePath.replace(".json", "");
+          const objectName = relativePath.replace('.json', '');
           if (data.hasOwnProperty(objectName)) {
             return this.addConfiguration(data, objectName, entry);
           }
@@ -46,8 +48,8 @@ export class SketchIngestorService {
     return new Promise<unknown[]>((resolve, reject) => {
       const fileReader = new FileReader();
 
-      fileReader.onloadstart = _event => {};
-      fileReader.onloadend = _event => {};
+      fileReader.onloadstart = _event => undefined;
+      fileReader.onloadend = _event => undefined;
 
       fileReader.onload = _event => {
         try {
@@ -73,15 +75,16 @@ export class SketchIngestorService {
     const jszip = JSZip();
 
     if (jszipLoadAsync(jszip)) {
-      const zipFileInstance = await jszip.loadAsync(data);
+      const zipFileInstance = await jszip.loadAsync<string | ArrayBuffer>(data);
 
       const files: unknown[] = [];
-      zipFileInstance.forEach((relativePath, zipEntry) => {
+      // TODO: We need to resolve this by a type;
+      (zipFileInstance as any).forEach((relativePath, zipEntry) => {
         files[relativePath] = zipEntry;
       });
       return files;
     } else {
-      throw new Error("JSzip not loaded");
+      throw new Error('JSzip not loaded');
     }
   }
 
@@ -127,18 +130,18 @@ export class SketchIngestorService {
 
   private async extractJson(_relativePath: string, entry: unknown) {
     if (entryAsyncCheck(entry)) {
-      const content = await entry.async("string");
+      const content = await entry.async<string>('string');
       return JSON.parse(content);
     } else {
-      throw new Error("JSZip undefined async function");
+      throw new Error('JSZip undefined async function');
     }
   }
 
   private async extractBase64(_relativePath: string, entry: unknown) {
     if (entryAsyncCheck(entry)) {
-      return entry.async("base64");
+      return entry.async<SketchMSPreview>('base64');
     } else {
-      throw new Error("JSZip undefined async function");
+      throw new Error('JSZip undefined async function');
     }
   }
 }

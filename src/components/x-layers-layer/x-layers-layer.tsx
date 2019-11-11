@@ -1,20 +1,20 @@
 import {
   Component,
   Element,
-  h,
   Host,
+  Listen,
   Prop,
   State,
-  Listen,
-  Watch
-} from "@stencil/core";
-import { CssBlocGenService } from "@xlayers/css-blocgen";
-import { ImageService, SymbolService, TextService } from "@xlayers/sketch-lib";
-import { SvgBlocGenService } from "@xlayers/svg-blocgen";
+  Watch,
+  h
+} from '@stencil/core';
+import { CssBlocGenService } from '@xlayers/css-blocgen';
+import { ImageService, SymbolService, TextService } from '@xlayers/sketch-lib';
+import { SvgBlocGenService } from '@xlayers/svg-blocgen';
 
 @Component({
-  tag: "x-layers-layer",
-  styleUrl: "x-layers-layer.css",
+  tag: 'x-layers-layer',
+  styleUrl: 'x-layers-layer.css',
   scoped: true
 })
 export class XlayersViewerLayer {
@@ -23,7 +23,7 @@ export class XlayersViewerLayer {
 
   @Prop() wireframe: boolean;
   @Prop() depth: number;
-  @Prop() mode: "2d" | "3d";
+  @Prop() mode: '2d' | '3d';
 
   @Element() element: HTMLElement;
 
@@ -59,9 +59,9 @@ export class XlayersViewerLayer {
     }
   }
 
-  @Watch("mode")
+  @Watch('mode')
   modeChanged() {
-    if (this.mode === "3d") {
+    if (this.mode === '3d') {
       this.enable3dStyle();
     } else {
       this.disable3dStyle();
@@ -122,14 +122,14 @@ export class XlayersViewerLayer {
   }
 
   enable3dStyle() {
-    this.element.classList.add("is-3d-view");
+    this.element.classList.add('is-3d-view');
     this.element.style.transform = `translateZ(${(
       this.depth * this.offset3d
     ).toFixed(3)}px)`;
   }
 
   disable3dStyle() {
-    this.element.classList.remove("is-3d-view");
+    this.element.classList.remove('is-3d-view');
     this.element.style.transform = `none`;
   }
 
@@ -138,13 +138,13 @@ export class XlayersViewerLayer {
       <Host>
         <div
           style={{
-            height: this.layer.frame.height + "px",
-            width: this.layer.frame.width + "px"
+            height: this.layer.frame.height + 'px',
+            width: this.layer.frame.width + 'px'
           }}
         >
           {this.layers.map(layer => (
             <x-layers-layer
-              class={"layer " + (this.wireframe ? "wireframe" : "")}
+              class={'layer ' + (this.wireframe ? 'wireframe' : '')}
               data={this.data}
               layer={layer}
               depth={this.depth + 1}
@@ -154,8 +154,8 @@ export class XlayersViewerLayer {
               data-name={layer.name}
               data-class={layer._class}
               style={{
-                width: layer.frame.width + "px",
-                height: layer.frame.height + "px"
+                width: layer.frame.width + 'px',
+                height: layer.frame.height + 'px'
               }}
             />
           ))}
@@ -165,7 +165,7 @@ export class XlayersViewerLayer {
           ))}
 
           {this.images.map(image => (
-            <img src={image} style={{ height: "100%", width: "100%" }} />
+            <img src={image} style={{ height: '100%', width: '100%' }} />
           ))}
         </div>
       </Host>

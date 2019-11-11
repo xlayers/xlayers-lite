@@ -3,7 +3,7 @@ import pascalCase from 'pascal-case';
 
 export class FormatService {
   indent(n: number, content: string) {
-    const indentation = !!n ? '  '.repeat(n) : '';
+    const indentation = Boolean(n) ? '  '.repeat(n) : '';
     return indentation + content;
   }
 

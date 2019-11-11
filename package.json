@@ -19,11 +19,16 @@
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
-    "generate": "stencil generate"
+    "generate": "stencil generate",
+    "lint": "tslint --project .",
+    "lint.fix": "tslint --project . --fix"
   },
   "devDependencies": {
     "@stencil/core": "1.7.5",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "tslint": "^5.20.1",
+    "tslint-ionic-rules": "^0.0.21",
+    "tslint-react": "^4.1.0"
   },
   "license": "MIT",
   "dependencies": {

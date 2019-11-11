@@ -1,8 +1,9 @@
-import { ImageService, LayerService, SymbolService } from "@xlayers/sketch-lib";
-import { WebBlocGenOptions } from "./web-blocgen.d";
-import { WebContextService } from "./web-context";
-import { WebParserService } from "./web-parser";
-import { WebRenderService } from "./web-render";
+import { ImageService, LayerService, SymbolService } from '@xlayers/sketch-lib';
+
+import { WebBlocGenOptions } from './web-blocgen.d';
+import { WebContextService } from './web-context';
+import { WebParserService } from './web-parser';
+import { WebRenderService } from './web-render';
 
 export class WebBlocGenService {
   private symbol: SymbolService = new SymbolService();
@@ -11,7 +12,6 @@ export class WebBlocGenService {
   private webParser: WebParserService = new WebParserService();
   private webRender: WebRenderService = new WebRenderService();
   private layer: LayerService = new LayerService();
-  constructor() {}
 
   compute(
     current: SketchMSLayer,
@@ -89,15 +89,15 @@ export class WebBlocGenService {
 
   private compileOptions(options: WebBlocGenOptions) {
     return {
-      textTagName: "span",
-      bitmapTagName: "img",
-      blockTagName: "div",
-      mode: "web",
+      textTagName: 'span',
+      bitmapTagName: 'img',
+      blockTagName: 'div',
+      mode: 'web',
       jsx: false,
-      xmlPrefix: "xly-",
-      cssPrefix: "xly_",
-      componentDir: "components",
-      assetDir: "assets",
+      xmlPrefix: 'xly-',
+      cssPrefix: 'xly_',
+      componentDir: 'components',
+      assetDir: 'assets',
       ...options
     };
   }

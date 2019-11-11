@@ -1,20 +1,20 @@
-import { StyleService, SymbolService, LayerService } from "@xlayers/sketch-lib";
-import { CssContextService } from "./css-context";
-import { CssBlocGenOptions } from "./css-blocgen.d";
+import { LayerService, StyleService, SymbolService } from '@xlayers/sketch-lib';
+
+import { CssBlocGenOptions } from './css-blocgen.d';
+import { CssContextService } from './css-context';
 
 export class CssParserService {
   private styleHelperService: StyleService = new StyleService();
   private cssContext: CssContextService = new CssContextService();
   private symbol: SymbolService = new SymbolService();
   private layer: LayerService = new LayerService();
-  constructor() {}
 
   compute(
     current: SketchMSLayer,
     data: SketchMSData,
     options: CssBlocGenOptions
   ) {
-    if (current._class === "page") {
+    if (current._class === 'page') {
       current.layers.forEach(layer => {
         this.flattenLayer(layer);
         this.visit(layer, data, options);
@@ -78,15 +78,15 @@ export class CssParserService {
     }
 
     switch (current._class as string) {
-      case "rectangle":
+      case 'rectangle':
         this.visitRectangleStyle(current);
         break;
 
-      case "text":
+      case 'text':
         this.visitTextStyle(current);
         break;
 
-      case "oval":
+      case 'oval':
         this.visitOvalStyle(current);
         break;
 
@@ -150,13 +150,13 @@ export class CssParserService {
   private extractFrame(current: SketchMSLayer) {
     if (current.frame) {
       return {
-        display: "block",
-        position: "absolute",
+        display: 'block',
+        position: 'absolute',
         left: `${current.frame.x}px`,
         top: `${current.frame.y}px`,
         width: `${current.frame.width}px`,
         height: `${current.frame.height}px`,
-        visibility: current.isVisible ? "visible" : "hidden"
+        visibility: current.isVisible ? 'visible' : 'hidden'
       };
     }
     return {};
@@ -165,13 +165,13 @@ export class CssParserService {
   private extractTextColor(current: SketchMSLayer) {
     const obj = current.style.textStyle.encodedAttributes;
 
-    if (obj.hasOwnProperty("MSAttributedStringColorAttribute")) {
+    if (obj.hasOwnProperty('MSAttributedStringColorAttribute')) {
       return {
         color: this.styleHelperService.parseColorAsRgba(
           obj.MSAttributedStringColorAttribute
         )
       };
-    } else if (obj.hasOwnProperty("NSColor")) {
+    } else if (obj.hasOwnProperty('NSColor')) {
       // TODO: Handle legacy
       // const archive = this.binaryPlistParser.parse64Content(obj.NSColor._archive);
       // (scope.style.textStyle.encodedAttributes.NSColor as any)._transformed = archive;
@@ -179,14 +179,14 @@ export class CssParserService {
     }
 
     return {
-      color: "black"
+      color: 'black'
     };
   }
 
   private extractParagraphStyle(current: SketchMSLayer) {
     const obj = current.style.textStyle.encodedAttributes;
 
-    if (obj.hasOwnProperty("NSParagraphStyle")) {
+    if (obj.hasOwnProperty('NSParagraphStyle')) {
       // TODO: Handle legacy
       // const archive = this.binaryPlistParser.parse64Content(scope.style.textStyle.encodedAttributes.NSParagraphStyle._archive);
       // (scope.style.textStyle.encodedAttributes.NSParagraphStyle as any)._transformed = archive;
@@ -200,12 +200,12 @@ export class CssParserService {
     const obj =
       current.style.textStyle.encodedAttributes.MSAttributedStringFontAttribute;
 
-    if (obj.hasOwnProperty("_class") && obj._class === "fontDescriptor") {
+    if (obj.hasOwnProperty('_class') && obj._class === 'fontDescriptor') {
       return {
-        "font-family": `'${obj.attributes.name}', 'Roboto', 'sans-serif'`,
-        "font-size": `${obj.attributes.size}px`
+        'font-family': `'${obj.attributes.name}', 'Roboto', 'sans-serif'`,
+        'font-size': `${obj.attributes.size}px`
       };
-    } else if (obj.hasOwnProperty("_archive")) {
+    } else if (obj.hasOwnProperty('_archive')) {
       // TODO: Handle legacy
       // const archive = this.binaryPlistParser.parse64Content(obj._archive);
       // (scope.style.textStyle.encodedAttributes.MSAttributedStringFontAttribute as any)._transformed = archive;
@@ -217,7 +217,7 @@ export class CssParserService {
 
   private addOvalShape() {
     return {
-      "border-radius": "50%"
+      'border-radius': '50%'
     };
   }
 
@@ -233,7 +233,7 @@ export class CssParserService {
     const obj = (current as any).fixedRadius;
     return obj
       ? {
-          "border-radius": `${obj.fixedRadius}px`
+          'border-radius': `${obj.fixedRadius}px`
         }
       : {};
   }
@@ -249,7 +249,7 @@ export class CssParserService {
 
   private extractBlurPseudoElement(current: SketchMSLayer) {
     const obj = (current as any).style.blur;
-    if (obj && obj.hasOwnProperty("radius") && obj.radius > 0) {
+    if (obj && obj.hasOwnProperty('radius') && obj.radius > 0) {
       const objFill = (current as any).style.fills;
 
       if (objFill && objFill.length > 0) {
@@ -266,13 +266,13 @@ export class CssParserService {
             height: `${current.frame.height + 50}px`,
             width: `${current.frame.width + 50}px`,
             content: '""',
-            position: "absolute",
-            top: "-25px",
-            left: "-25px",
-            bottom: "0",
-            right: "0",
-            background: "inherit",
-            "box-shadow": `inset 0 0 0 ${current.frame.width /
+            position: 'absolute',
+            top: '-25px',
+            left: '-25px',
+            bottom: '0',
+            right: '0',
+            background: 'inherit',
+            'box-shadow': `inset 0 0 0 ${current.frame.width /
               2}px ${fillColor}`,
             filter: `blur(${obj.radius.toFixed(2)}px)`
           };
@@ -298,11 +298,11 @@ export class CssParserService {
           const borderColor = this.styleHelperService.parseColorAsRgba(
             border.color
           );
-          const inset = border.position === BorderType.INSIDE ? "inset" : "";
+          const inset = border.position === BorderType.INSIDE ? 'inset' : '';
           const shadow = [
             `0 0 0 ${border.thickness}px ${borderColor}`,
             inset
-          ].join(" ");
+          ].join(' ');
 
           return [shadow, ...acc];
         }
@@ -312,7 +312,7 @@ export class CssParserService {
 
       if (bordersStyles.length > 0) {
         return {
-          "box-shadow": bordersStyles.join(",")
+          'box-shadow': bordersStyles.join(',')
         };
       }
     }
@@ -334,17 +334,17 @@ export class CssParserService {
         );
 
         const blurObj = (current as any).style.blur;
-        if (blurObj && blurObj.hasOwnProperty("radius") && blurObj.radius > 0) {
+        if (blurObj && blurObj.hasOwnProperty('radius') && blurObj.radius > 0) {
           return {
             ...this.extractFillGradient(firstFill),
-            background: "inherit",
-            overflow: "hidden",
-            "background-color": fillColor
+            background: 'inherit',
+            overflow: 'hidden',
+            'background-color': fillColor
           };
         } else {
           return {
             ...this.extractFillGradient(firstFill),
-            "background-color": fillColor
+            'background-color': fillColor
           };
         }
       }
@@ -359,7 +359,7 @@ export class CssParserService {
         const position =
           stop.position >= 0 && stop.position <= 1
             ? ` ${stop.position * 100}%`
-            : "";
+            : '';
         const fillColor = this.styleHelperService.parseColorAsRgba(stop.color);
 
         return `${fillColor}${position}`;
@@ -369,7 +369,7 @@ export class CssParserService {
         // apply gradient, if multiple fills
         // default angle is 90deg
         return {
-          background: `linear-gradient(90deg, ${fillsStyles.join(",")})`
+          background: `linear-gradient(90deg, ${fillsStyles.join(',')})`
         };
       }
     }
@@ -381,9 +381,9 @@ export class CssParserService {
     const innerShadow = this.extractInnerShadow(current);
     const outterShadow = this.extractOuterShadow(current);
 
-    return innerShadow + outterShadow !== ""
+    return innerShadow + outterShadow !== ''
       ? {
-          "box-shadow": innerShadow + outterShadow
+          'box-shadow': innerShadow + outterShadow
         }
       : {};
   }
@@ -404,11 +404,11 @@ export class CssParserService {
           `${innerShadow.spread}px`,
           `${shadowColor}`,
           `inset`
-        ].join(" ");
+        ].join(' ');
       });
     }
 
-    return "";
+    return '';
   }
 
   private extractOuterShadow(current: SketchMSLayer) {
@@ -425,11 +425,11 @@ export class CssParserService {
           `${shadow.blurRadius}px`,
           `${shadow.spread}px`,
           `${shadowColor}`
-        ].join(" ");
+        ].join(' ');
       });
     }
 
-    return "";
+    return '';
   }
 
   private generateCssClassName(options: CssBlocGenOptions) {

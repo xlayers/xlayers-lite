@@ -1,17 +1,17 @@
-import { Component, Host, h, Listen, State, Prop, Watch } from "@stencil/core";
-import { SketchService } from "@xlayers/core";
+import { Component, Host, Listen, Prop, State, Watch, h } from '@stencil/core';
+import { SketchService } from '@xlayers/core';
 
 @Component({
-  tag: "x-layers",
-  styleUrl: "x-layers.css",
+  tag: 'x-layers',
+  styleUrl: 'x-layers.css',
   scoped: true
 })
 export class XlayersViewer {
   private sketchService: SketchService = new SketchService();
   @Prop() src?: string;
-  @Prop() mode: "2d" | "3d" = "3d";
-  @Prop() zoom: number = 1;
-  @Prop() wireframe: boolean = false;
+  @Prop() mode: '2d' | '3d' = '3d';
+  @Prop() zoom = 1;
+  @Prop() wireframe = false;
   @State() data: SketchMSData;
   currentPage = {};
   isError = false;
@@ -20,10 +20,10 @@ export class XlayersViewer {
     await this.srcChanged();
   }
 
-  @Watch("src")
+  @Watch('src')
   async srcChanged() {
     try {
-      if (this.src) {
+      if (this.src.length > 0) {
         const res = await fetch(this.src);
         const fileBlob = await res.blob();
         this.data = null;
@@ -36,7 +36,7 @@ export class XlayersViewer {
     }
   }
 
-  @Listen("fileUploaded")
+  @Listen('fileUploaded')
   async onFileUploaded(event: CustomEvent) {
     try {
       this.data = await this.sketchService.loadSketchFile(event.detail);
@@ -46,8 +46,8 @@ export class XlayersViewer {
   }
 
   @Watch('mode')
-  modechanged(prev,curr){
-    console.error(prev,curr)
+  modechanged(prev, curr) {
+    console.error(prev, curr);
   }
 
   render() {
