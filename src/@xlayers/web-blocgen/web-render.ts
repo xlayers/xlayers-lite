@@ -1,14 +1,15 @@
-import { CssBlocGenService } from "@xlayers/css-blocgen";
+import { CssBlocGenService } from '@xlayers/css-blocgen';
 import {
   FormatService,
   ImageService,
   LayerService,
   SymbolService,
   TextService
-} from "@xlayers/sketch-lib";
-import { SvgBlocGenService } from "@xlayers/svg-blocgen";
-import { WebBlocGenOptions } from "./web-blocgen.d";
-import { WebContextService } from "./web-context";
+} from '@xlayers/sketch-lib';
+import { SvgBlocGenService } from '@xlayers/svg-blocgen';
+
+import { WebBlocGenOptions } from './web-blocgen.d';
+import { WebContextService } from './web-context';
 
 export class WebRenderService {
   private text: TextService = new TextService();
@@ -20,20 +21,18 @@ export class WebRenderService {
   private cssBlocGen: CssBlocGenService = new CssBlocGenService();
   private svgBlocGen: SvgBlocGenService = new SvgBlocGenService();
 
-  constructor() {}
-
   render(current: SketchMSLayer, options: WebBlocGenOptions) {
     const fileName = this.format.normalizeName(current.name);
     return [
       {
-        kind: "web",
+        kind: 'web',
         value: this.renderComponent(current, options),
-        language: "html",
+        language: 'html',
         uri: `${options.componentDir}/${fileName}.html`
       },
       ...this.cssBlocGen.render(current, options).map(file => ({
         ...file,
-        kind: "web"
+        kind: 'web'
       }))
     ];
   }
@@ -41,13 +40,13 @@ export class WebRenderService {
   private renderComponent(current: SketchMSLayer, options: WebBlocGenOptions) {
     const template = [];
 
-    if (current._class === "page") {
+    if (current._class === 'page') {
       this.walk(current, template, 0, options);
     } else {
       this.visit(current, template, 0, options);
     }
 
-    return template.join("\n");
+    return template.join('\n');
   }
 
   private walk(
@@ -122,7 +121,7 @@ export class WebRenderService {
     template.push(
       this.format.indent(
         indent,
-        [`<${options.bitmapTagName}`, ...attributes].join(" ") + " />"
+        [`<${options.bitmapTagName}`, ...attributes].join(' ') + ' />'
       )
     );
   }
@@ -146,7 +145,7 @@ export class WebRenderService {
           `<${options.textTagName}>`,
           this.text.lookup(current),
           `</${options.textTagName}>`
-        ].join("")
+        ].join('')
       )
     );
     template.push(this.format.indent(indent, `</${options.blockTagName}>`));
@@ -169,11 +168,11 @@ export class WebRenderService {
         .render(current, { xmlNamespace: false })
         .map(file =>
           file.value
-            .split("\n")
+            .split('\n')
             .map(line => this.format.indent(indent + 1, line))
-            .join("\n")
+            .join('\n')
         )
-        .join("\n")
+        .join('\n')
     );
     template.push(this.format.indent(indent, `</${options.blockTagName}>`));
   }
@@ -186,13 +185,13 @@ export class WebRenderService {
     const attributes = this.webContext.of(current).attributes;
     if (options.jsx) {
       const attributIndex = attributes.findIndex(attribute =>
-        attribute.startsWith("class=")
+        attribute.startsWith('class=')
       );
       attributes[attributIndex] = attributes[attributIndex].replace(
-        "class=",
-        "className="
+        'class=',
+        'className='
       );
     }
-    return [`<${tagName}`, ...attributes].join(" ") + ">";
+    return [`<${tagName}`, ...attributes].join(' ') + '>';
   }
 }

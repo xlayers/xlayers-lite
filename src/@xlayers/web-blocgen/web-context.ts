@@ -1,7 +1,6 @@
 import { WebBlocGenContext } from './web-blocgen.d';
 
 export class WebContextService {
-  constructor() {}
 
   identify(current: SketchMSLayer) {
     return [

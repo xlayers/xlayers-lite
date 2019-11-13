@@ -1,14 +1,15 @@
-import { CssBlocGenService } from "@xlayers/css-blocgen";
+import { CssBlocGenService } from '@xlayers/css-blocgen';
 import {
   FormatService,
   ImageService,
   LayerService,
   SymbolService,
   TextService
-} from "@xlayers/sketch-lib";
-import { SvgBlocGenService } from "@xlayers/svg-blocgen";
-import { WebBlocGenOptions } from "./web-blocgen.d";
-import { WebContextService } from "./web-context";
+} from '@xlayers/sketch-lib';
+import { SvgBlocGenService } from '@xlayers/svg-blocgen';
+
+import { WebBlocGenOptions } from './web-blocgen.d';
+import { WebContextService } from './web-context';
 
 export class WebParserService {
   private text: TextService = new TextService();
@@ -19,7 +20,6 @@ export class WebParserService {
   private cssBlocGen: CssBlocGenService = new CssBlocGenService();
   private svgBlocGen: SvgBlocGenService = new SvgBlocGenService();
   private webContext: WebContextService = new WebContextService();
-  constructor() {}
 
   compute(
     current: SketchMSLayer,
@@ -28,7 +28,7 @@ export class WebParserService {
   ) {
     this.svgBlocGen.compute(current, data, options);
     this.cssBlocGen.compute(current, data, options);
-    if (current._class === "page") {
+    if (current._class === 'page') {
       this.walk(current, data, options);
     } else {
       this.visit(current, data, options);
@@ -85,13 +85,13 @@ export class WebParserService {
     const className = this.cssBlocGen.context(current).className;
     this.webContext.put(current, {
       attributes: [
-        ...(className
-          ? [`${options.jsx ? "className" : "class"}="${className}"`]
+        ...(className.length > 0
+          ? [`${options.jsx ? 'className' : 'class'}="${className}"`]
           : []),
         `role="${current._class}"`,
         `aria-label="${current.name}"`
       ],
-      type: "block"
+      type: 'block'
     });
   }
 
@@ -118,27 +118,27 @@ export class WebParserService {
         `aria-label="${current.name}"`,
         `src="${options.assetDir}/${fileName}.jpg`
       ],
-      type: "image"
+      type: 'image'
     });
   }
 
   private visitText(current: SketchMSLayer, _options: WebBlocGenOptions) {
     this.webContext.put(current, {
       attributes: this.generateClassAttribute(current),
-      type: "text"
+      type: 'text'
     });
   }
 
   private visitShape(current: SketchMSLayer, _options: WebBlocGenOptions) {
     this.webContext.put(current, {
       attributes: this.generateClassAttribute(current),
-      type: "shape"
+      type: 'shape'
     });
   }
 
   private generateClassAttribute(current: SketchMSLayer) {
     const className = this.cssBlocGen.context(current).className;
-    return className
+    return className.length > 0
       ? [`class="${this.cssBlocGen.context(current).className}"`]
       : [];
   }

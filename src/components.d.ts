@@ -11,20 +11,20 @@ import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 
 export namespace Components {
   interface XLayers {
-    'mode': "2d" | "3d";
+    'mode': '2d' | '3d';
     'src'?: string;
     'wireframe': boolean;
     'zoom': number;
   }
   interface XLayersCanvas {
     'data': SketchMSData;
-    'mode': "2d" | "3d";
+    'mode': '2d' | '3d';
     'wireframe': boolean;
     'zoom': number;
   }
   interface XLayersContainer {
     'data': SketchMSData;
-    'mode': "2d" | "3d";
+    'mode': '2d' | '3d';
     'wireframe': boolean;
     'zoom': number;
   }
@@ -32,12 +32,12 @@ export namespace Components {
     'data': SketchMSData;
     'depth': number;
     'layer': SketchMSLayer;
-    'mode': "2d" | "3d";
+    'mode': '2d' | '3d';
     'wireframe': boolean;
   }
   interface XLayersPage {
     'data': SketchMSData;
-    'mode': "2d" | "3d";
+    'mode': '2d' | '3d';
     'page': SketchMSPage;
     'wireframe': boolean;
   }
@@ -94,20 +94,20 @@ declare global {
 
 declare namespace LocalJSX {
   interface XLayers {
-    'mode'?: "2d" | "3d";
+    'mode'?: '2d' | '3d';
     'src'?: string;
     'wireframe'?: boolean;
     'zoom'?: number;
   }
   interface XLayersCanvas {
     'data'?: SketchMSData;
-    'mode'?: "2d" | "3d";
+    'mode'?: '2d' | '3d';
     'wireframe'?: boolean;
     'zoom'?: number;
   }
   interface XLayersContainer {
     'data'?: SketchMSData;
-    'mode'?: "2d" | "3d";
+    'mode'?: '2d' | '3d';
     'wireframe'?: boolean;
     'zoom'?: number;
   }
@@ -115,12 +115,12 @@ declare namespace LocalJSX {
     'data'?: SketchMSData;
     'depth'?: number;
     'layer'?: SketchMSLayer;
-    'mode'?: "2d" | "3d";
+    'mode'?: '2d' | '3d';
     'wireframe'?: boolean;
   }
   interface XLayersPage {
     'data'?: SketchMSData;
-    'mode'?: "2d" | "3d";
+    'mode'?: '2d' | '3d';
     'page'?: SketchMSPage;
     'wireframe'?: boolean;
   }

@@ -4,8 +4,6 @@ export class ImageService {
 
   private format: FormatService = new FormatService();
 
-  constructor() {}
-
   identify(current: SketchMSLayer) {
     return (current._class as string) === 'bitmap';
   }

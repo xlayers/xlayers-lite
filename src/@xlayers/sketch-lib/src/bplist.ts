@@ -1,29 +1,29 @@
-import { Buffer } from "buffer";
+import { BigInteger } from 'big-integer';
+import { Buffer } from 'buffer';
 
 // @ts-ignore
-import { BigInteger } from "big-integer";
 // @ts-ignore
-const BigInt = window["BigInt"] || BigInteger;
+const BigInt = window['BigInt'] || BigInteger;
 
 type BufferEncoding =
-  | "hex"
-  | "utf8"
-  | "utf-8"
-  | "ascii"
-  | "latin1"
-  | "binary"
-  | "base64"
-  | "ucs2"
-  | "ucs-2"
-  | "utf16le"
-  | "utf-16le";
+  | 'hex'
+  | 'utf8'
+  | 'utf-8'
+  | 'ascii'
+  | 'latin1'
+  | 'binary'
+  | 'base64'
+  | 'ucs2'
+  | 'ucs-2'
+  | 'utf16le'
+  | 'utf-16le';
 
 // @ts-ignore
 class PropertyListFormatException extends Error {
   constructor(message) {
     super();
     Error.captureStackTrace(this, this.constructor);
-    this.name = "PropertyListFormatException";
+    this.name = 'PropertyListFormatException';
     this.message = message;
   }
 }
@@ -33,7 +33,7 @@ class UnsupportedEncodingException extends Error {
   constructor(message) {
     super();
     Error.captureStackTrace(this, this.constructor);
-    this.name = "UnsupportedEncodingException";
+    this.name = 'UnsupportedEncodingException';
     this.message = message;
   }
 }
@@ -43,7 +43,7 @@ class UnsupportedOperationException extends Error {
   constructor(message) {
     super();
     Error.captureStackTrace(this, this.constructor);
-    this.name = "UnsupportedOperationException";
+    this.name = 'UnsupportedOperationException';
     this.message = message;
   }
 }
@@ -53,7 +53,7 @@ class IllegalArgumentException extends Error {
   constructor(message) {
     super();
     Error.captureStackTrace(this, this.constructor);
-    this.name = "IllegalArgumentException";
+    this.name = 'IllegalArgumentException';
     this.message = message;
   }
 }
@@ -64,8 +64,8 @@ export class UID {
     // @ts-ignore
     private buffer: Buffer,
     // @ts-ignore
-    private string: string
-  ) {}
+    private name: string
+  ) { }
 }
 
 /*
@@ -131,7 +131,7 @@ export class BplistService {
   /**
    * The table holding the information at which offset each object is found
    */
-  private offsetTable: Array<number>;
+  private offsetTable: number[];
 
   /**
    * Parses a binary property list from a binary base64 string.
@@ -141,10 +141,10 @@ export class BplistService {
    * @throws PropertyListFormatException When the property list's format could not be parsed.
    * @throws UnsupportedEncodingException When a NSString object could not be decoded.
    */
-  public parse64Content(data: string) {
+  parse64Content(data: string) {
     const raw = atob(data);
     const rawLength = raw.length;
-    const array: Buffer = new Buffer(rawLength);
+    const array: Buffer = Buffer.alloc(rawLength);
 
     for (let i = 0; i < rawLength; i++) {
       array[i] = raw.charCodeAt(i);
@@ -162,22 +162,23 @@ export class BplistService {
    * @throws PropertyListFormatException When the property list's format could not be parsed.
    * @throws UnsupportedEncodingException When a NSString object could not be decoded.
    */
-  public parse(data: Buffer) {
+  parse(data: Buffer) {
     this.content = this.doParse(data);
 
     return this.content;
   }
 
-  public toJson(_map = new Map<any, any>()) {
+  toJson(_map = new Map<any, any>()) {
     const out = Object.create(null);
     this.content.forEach((value, key) => {
       if (value instanceof Map) {
         out[key] = this.toJson(value);
+        return out;
       } else {
         out[key] = value;
+        return out;
       }
     });
-    return out;
   }
 
   /**
@@ -193,7 +194,7 @@ export class BplistService {
 
     const magic = this.buffer2String(data, 0, 8);
 
-    if (!magic.startsWith("bplist") && !magic.startsWith("plist")) {
+    if (!magic.startsWith('bplist') && !magic.startsWith('plist')) {
       // throw new IllegalArgumentException(`'The given data is no binary property list. Wrong magic bytes: ${magic}`);
       console.error(
         `'The given data is no binary property list. Wrong magic bytes: ${magic}`
@@ -237,7 +238,7 @@ export class BplistService {
     bytes: Buffer,
     startIndex: number,
     endIndex: number,
-    encoding: BufferEncoding = "utf-8"
+    encoding: BufferEncoding = 'utf-8'
   ) {
     return this.copyOfRange(bytes, startIndex, endIndex).toString(encoding);
   }
@@ -389,21 +390,21 @@ export class BplistService {
           case 0x0: {
             // null object (v1.0 and later)
             return {
-              $key: "null",
+              $key: 'null',
               $value: null
             };
           }
           case 0x8: {
             // false
             return {
-              $key: "false",
+              $key: 'false',
               $value: false
             };
           }
           case 0x9: {
             // true
             return {
-              $key: "true",
+              $key: 'true',
               $value: true
             };
           }
@@ -453,7 +454,7 @@ export class BplistService {
         );
 
         return {
-          $key: "integer",
+          $key: 'integer',
           $value: parseInt(value, 10)
         };
       }
@@ -467,7 +468,7 @@ export class BplistService {
         );
 
         return {
-          $key: "float",
+          $key: 'float',
           $value: parseFloat(value)
         };
       }
@@ -480,7 +481,7 @@ export class BplistService {
           );
         }
         return {
-          $key: "date",
+          $key: 'date',
           $value: new Date(
             this.buffer2String(this.bytes, offset + 1, offset + 9)
           )
@@ -501,7 +502,7 @@ export class BplistService {
         );
 
         return {
-          $key: "data",
+          $key: 'data',
           $value: value
         };
       }
@@ -517,11 +518,11 @@ export class BplistService {
           this.bytes,
           offset + strOffset,
           offset + strOffset + len,
-          "ascii"
+          'ascii'
         );
 
         return {
-          $key: "ascii",
+          $key: 'ascii',
           $value: value
         };
       }
@@ -543,7 +544,7 @@ export class BplistService {
           this.bytes,
           startIndex,
           (startIndex + offset) * 2 ** 8 + endIndex,
-          "base64"
+          'base64'
         );
         // const value = this.buffer2String(this.bytes, offset + strOffset, offset + strOffset + length, 'base64');
 
@@ -551,7 +552,7 @@ export class BplistService {
           return this.parse64Content(value);
         } else {
           return {
-            $key: "utf-16",
+            $key: 'utf-16',
             $value: value
           };
         }
@@ -578,7 +579,7 @@ export class BplistService {
         );
 
         return {
-          $key: "utf-8",
+          $key: 'utf-8',
           $value: value
         };
       }
@@ -592,7 +593,7 @@ export class BplistService {
         );
 
         return {
-          $key: "uid",
+          $key: 'uid',
           $value: value
         };
       }
@@ -616,7 +617,7 @@ export class BplistService {
         }
 
         return {
-          $key: "array",
+          $key: 'array',
           $value: value
         };
       }
@@ -640,7 +641,7 @@ export class BplistService {
         }
 
         return {
-          $key: "order-set",
+          $key: 'order-set',
           $value: value
         };
       }
@@ -664,7 +665,7 @@ export class BplistService {
         }
 
         return {
-          $key: "set",
+          $key: 'set',
           $value: value
         };
       }
@@ -687,13 +688,13 @@ export class BplistService {
           const valRef = this.parseUnsignedInt(
             this.bytes,
             offset +
-              contentOffset +
-              len * this.objectRefSize +
-              i * this.objectRefSize,
+            contentOffset +
+            len * this.objectRefSize +
+            i * this.objectRefSize,
             offset +
-              contentOffset +
-              len * this.objectRefSize +
-              (i + 1) * this.objectRefSize
+            contentOffset +
+            len * this.objectRefSize +
+            (i + 1) * this.objectRefSize
           );
           const key = this.visit(keyRef);
           const val = this.visit(valRef);
@@ -701,7 +702,7 @@ export class BplistService {
         }
 
         return {
-          $key: "dictionary",
+          $key: 'dictionary',
           $value: value
         };
       }
@@ -715,6 +716,7 @@ export class BplistService {
   }
 
   private isBase64(value: string) {
+    // tslint:disable-next-line: no-empty-character-class
     return /^([\+\/-9A-Za-z]{4})*([\+\/-9A-Za-z]{4}|[\+\/-9A-Za-z]{3}=|[\+\/-9A-Za-z]{2}==)$/u.test(
       value
     );

@@ -1,13 +1,12 @@
-import { SvgContextService } from "./svg-context";
-import { SvgRenderService } from "./svg-render";
-import { SvgParserService } from "./svg-parser";
-import { SvgBlocGenOptions } from "./svg-blocgen.d";
+import { SvgBlocGenOptions } from './svg-blocgen.d';
+import { SvgContextService } from './svg-context';
+import { SvgParserService } from './svg-parser';
+import { SvgRenderService } from './svg-render';
 
 export class SvgBlocGenService {
   private svgContext: SvgContextService = new SvgContextService();
   private svgParser: SvgParserService = new SvgParserService();
   private svgRender: SvgRenderService = new SvgRenderService();
-  constructor() {}
 
   compute(
     current: SketchMSLayer,

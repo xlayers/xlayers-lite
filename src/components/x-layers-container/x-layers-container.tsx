@@ -1,8 +1,8 @@
-import { Component, h, Prop, Listen } from "@stencil/core";
+import { Component, Listen, Prop, h } from '@stencil/core';
 
 @Component({
-  tag: "x-layers-container",
-  styleUrl: "x-layers-container.css",
+  tag: 'x-layers-container',
+  styleUrl: 'x-layers-container.css',
   scoped: true
 })
 export class XlayersViewerContainer {
@@ -10,7 +10,7 @@ export class XlayersViewerContainer {
 
   @Prop() data: SketchMSData;
 
-  @Prop() mode: "2d" | "3d";
+  @Prop() mode: '2d' | '3d';
   @Prop() zoom: number;
   @Prop() wireframe: boolean;
 

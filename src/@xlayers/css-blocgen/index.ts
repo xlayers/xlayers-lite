@@ -1,14 +1,12 @@
-import { CssContextService } from "./css-context";
-import { CssParserService } from "./css-parser";
-import { CssRenderService } from "./css-render";
-import { CssBlocGenOptions } from "./css-blocgen.d";
+import { CssBlocGenOptions } from './css-blocgen.d';
+import { CssContextService } from './css-context';
+import { CssParserService } from './css-parser';
+import { CssRenderService } from './css-render';
 export class CssBlocGenService {
 
   private cssContext: CssContextService = new CssContextService();
   private cssParser: CssParserService = new CssParserService();
   private cssRender: CssRenderService = new CssRenderService();
-  constructor(
-  ) {}
 
   compute(
     current: SketchMSLayer,
@@ -33,8 +31,8 @@ export class CssBlocGenService {
   private compileOptions(options: CssBlocGenOptions) {
     return {
       generateClassName: true,
-      cssPrefix: "xly_",
-      componentDir: "components",
+      cssPrefix: 'xly_',
+      componentDir: 'components',
       ...options
     };
   }

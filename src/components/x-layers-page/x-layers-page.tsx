@@ -1,8 +1,8 @@
-import { Component, h, Host, Prop, Element, Listen, Watch } from "@stencil/core";
+import { Component, Element, Host, Listen, Prop, Watch, h } from '@stencil/core';
 
 @Component({
-  tag: "x-layers-page",
-  styleUrl: "x-layers-page.css",
+  tag: 'x-layers-page',
+  styleUrl: 'x-layers-page.css',
   scoped: true
 })
 export class XlayersViewerPage {
@@ -10,7 +10,7 @@ export class XlayersViewerPage {
   @Prop() page: SketchMSPage;
 
   @Prop() wireframe: boolean;
-  @Prop() mode: "2d" | "3d";
+  @Prop() mode: '2d' | '3d';
 
   @Element() element: HTMLElement;
 
@@ -18,13 +18,12 @@ export class XlayersViewerPage {
     this.modeChanged();
   }
 
-
   @Watch('mode')
-  modeChanged(){
-    if (this.mode === "3d") {
-      this.element.classList.add("is-3d-view");
+  modeChanged() {
+    if (this.mode === '3d') {
+      this.element.classList.add('is-3d-view');
     } else {
-      this.element.classList.remove("is-3d-view");
+      this.element.classList.remove('is-3d-view');
     }
   }
   render() {
@@ -32,7 +31,7 @@ export class XlayersViewerPage {
       <Host>
         {this.page.layers.map(layer => (
           <x-layers-layer
-            class={"layer " + (this.wireframe ? "wireframe" : "")}
+            class={'layer ' + (this.wireframe ? 'wireframe' : '')}
             data={this.data}
             layer={layer}
             depth={1}
@@ -42,8 +41,8 @@ export class XlayersViewerPage {
             data-name={layer.name}
             data-class={layer._class}
             style={{
-              width: layer.frame.width + "px",
-              height: layer.frame.height + "px"
+              width: layer.frame.width + 'px',
+              height: layer.frame.height + 'px'
             }}
           />
         ))}

@@ -1,15 +1,14 @@
-import { ShapeService, SymbolService, LayerService } from "@xlayers/sketch-lib";
-import { StyleService } from "@xlayers/sketch-lib";
-import { SvgContextService } from "./svg-context";
-import { SvgBlocGenOptions } from "./svg-blocgen";
+import { LayerService, ShapeService, StyleService, SymbolService } from '@xlayers/sketch-lib';
+
+import { SvgBlocGenOptions } from './svg-blocgen';
+import { SvgContextService } from './svg-context';
 
 export class SvgParserService {
   private shape: ShapeService = new ShapeService();
-  private style: StyleService = new StyleService();
   private layer: LayerService = new LayerService();
+  private style: StyleService = new StyleService();
   private symbol: SymbolService = new SymbolService();
   private svgContext: SvgContextService = new SvgContextService();
-  constructor() {}
 
   compute(
     current: SketchMSLayer,
@@ -62,15 +61,15 @@ export class SvgParserService {
 
   private visitContent(current: SketchMSLayer) {
     switch (current._class as string) {
-      case "shapePath":
+      case 'shapePath':
         this.visitShapePath(current);
         break;
 
-      case "shapeGroup":
+      case 'shapeGroup':
         this.visitShapeGroup(current);
         break;
 
-      case "triangle":
+      case 'triangle':
         this.visitTriangleShape(current);
         break;
 
@@ -87,7 +86,7 @@ export class SvgParserService {
     if (
       current.style.borders &&
       current.style.borders.length > 0 &&
-      current.style.borders[0].thickness
+      current.style.borders[0].thickness !== null
     ) {
       config.push(`stroke-width="${current.style.borders[0].thickness}"`);
       const color = this.style.parseColorAsHex(current.style.borders[0].color);
@@ -127,7 +126,7 @@ export class SvgParserService {
     segments.unshift(`M${origin.x} ${origin.y}`);
 
     if ((current as any).isClosed) {
-      segments.push("z");
+      segments.push('z');
     }
     const fillStyle = this.extractFillStyle(current);
 
@@ -135,7 +134,7 @@ export class SvgParserService {
       offset,
       paths: [
         {
-          type: "path",
+          type: 'path',
           attributes: [...config, fillStyle, `d="${segments}"`]
         }
       ]
@@ -150,7 +149,7 @@ export class SvgParserService {
     if (
       current.style.borders &&
       current.style.borders.length > 0 &&
-      current.style.borders[0].thickness
+      current.style.borders[0].thickness !== null
     ) {
       config.push(`stroke-width="${current.style.borders[0].thickness / 2}"`);
       const color = this.style.parseColorAsHex(current.style.borders[0].color);
@@ -167,7 +166,7 @@ export class SvgParserService {
         );
         return `${currPoint.x}, ${currPoint.y}`;
       })
-      .join(" ");
+      .join(' ');
 
     const fillStyle = this.extractFillStyle(current);
 
@@ -175,7 +174,7 @@ export class SvgParserService {
       offset,
       paths: [
         {
-          type: "polygon",
+          type: 'polygon',
           attributes: [...config, fillStyle, `points="${segments}"`]
         }
       ]
@@ -223,10 +222,10 @@ export class SvgParserService {
 
       // TODO: isClosed to type
       if ((layer as any).isClosed) {
-        segments.push("z");
+        segments.push('z');
       }
 
-      return segments.join(" ");
+      return segments.join(' ');
     });
 
     const fillStyle = this.extractFillStyle(current);
@@ -235,8 +234,8 @@ export class SvgParserService {
       offset,
       paths: [
         {
-          type: "path",
-          attributes: [fillStyle, `d="${paths.join(" ")}"`]
+          type: 'path',
+          attributes: [fillStyle, `d="${paths.join(' ')}"`]
         }
       ]
     });

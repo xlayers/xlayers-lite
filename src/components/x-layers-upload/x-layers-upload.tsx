@@ -1,21 +1,20 @@
-import { Component, Event, h, Host, Listen } from "@stencil/core";
-import { EventEmitter } from "events";
+import { Component, Event, Host, Listen, h } from '@stencil/core';
+import { EventEmitter } from 'events';
 
 @Component({
-  tag: "x-layers-upload",
-  styleUrl: "x-layers-upload.css",
+  tag: 'x-layers-upload',
+  styleUrl: 'x-layers-upload.css',
   scoped: true
 })
 export class XlayersUpload {
   @Event({
-    eventName: "fileUploaded"
+    eventName: 'fileUploaded'
   })
   fileUploaded: EventEmitter;
 
   fileBrowserRef!: HTMLInputElement;
 
-
-  @Listen("drop", {
+  @Listen('drop', {
     passive: false
   })
   onFileDrop(event: DragEvent) {
@@ -24,22 +23,17 @@ export class XlayersUpload {
 
     if (event.dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
-      for (let i = 0; i < event.dataTransfer.items.length; i++) {
+      for (const file of Array.from(event.dataTransfer.files)) {
         // If dropped items aren't files, reject them
-        if (event.dataTransfer.items[i].kind === "file") {
-          const file = event.dataTransfer.items[i].getAsFile() as File;
-          this.onFileChange(file);
-
+        if ((file as any).kind === 'file') {
           // we only accept one file (for now)
-          return true;
+          this.onFileChange((file as any).getAsFile());
         }
       }
     } else {
       // Use DataTransfer interface to access the file(s)
-      for (let i = 0; i < event.dataTransfer.files.length; i++) {
-        const file = event.dataTransfer.files[i];
+      for (const file of Array.from(event.dataTransfer.files)) {
         this.onFileChange(file);
-
         // we only accept one file (for now)
         return true;
       }
@@ -49,15 +43,15 @@ export class XlayersUpload {
     this.removeDragData(event);
   }
 
-  @Listen("dragover", {
+  @Listen('dragover', {
     passive: false
   })
   dragOverHandler(event: DragEvent) {
     event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
+    event.dataTransfer.dropEffect = 'move';
   }
 
-  @Listen("input")
+  @Listen('input')
   onFileChange(inputEvent: any | File) {
     let file;
     if (!inputEvent.target) {
@@ -70,7 +64,7 @@ export class XlayersUpload {
       file = files[0];
     }
 
-    if (file.name.endsWith(".sketch")) {
+    if (file.name.endsWith('.sketch')) {
       this.fileUploaded.emit(file);
     }
   }
@@ -98,15 +92,30 @@ export class XlayersUpload {
 
         <footer class="footer footer--full">
           <span>
-            <a href="https://github.com/xlayers/xlayers/issues/new" target="__blank">Give us your feedback </a> ● 
-            <a href="https://opencollective.com/xlayers" target="__blank"> Support us </a>
+            <a
+              href="https://github.com/xlayers/xlayers/issues/new"
+              target="__blank"
+            >
+              Give us your feedback{' '}
+            </a>{' '}
+            ●
+            <a href="https://opencollective.com/xlayers" target="__blank">
+              {' '}
+              Support us{' '}
+            </a>
           </span>
           <span>
             <a href="https://twitter.com/xlayers_" target="__blank">
-              <img src="https://xlayers.app/assets/twitter.png" alt="Follow us on twitter" />
+              <img
+                src="https://xlayers.app/assets/twitter.png"
+                alt="Follow us on twitter"
+              />
             </a>
             <a href="https://opencollective.com/xlayers" target="__blank">
-              <img src="https://xlayers.app/assets/github-circle.png" alt="Find us on Github" />
+              <img
+                src="https://xlayers.app/assets/github-circle.png"
+                alt="Find us on Github"
+              />
             </a>
           </span>
           <span>

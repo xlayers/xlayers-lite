@@ -4,8 +4,6 @@ export class TextService {
 
   private binaryHelperService: BplistService = new BplistService();
 
-  constructor() {}
-
   identify(current: SketchMSLayer) {
     return (current._class as string) === 'text';
   }
