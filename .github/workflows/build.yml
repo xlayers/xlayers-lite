@@ -43,3 +43,7 @@ jobs:
         env:
           DISPLAY: ":99.0"
         run: npm build
+      - name: Run tests
+        env:
+          DISPLAY: ":99.0"
+        run: npm test
