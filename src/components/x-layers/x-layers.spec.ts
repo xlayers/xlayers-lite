@@ -1,4 +1,4 @@
-import { XlayersViewer } from './x-layers';
+import { XlayersViewer } from './xlayers';
 
 describe('x-layers', () => {
   it('builds', () => {
