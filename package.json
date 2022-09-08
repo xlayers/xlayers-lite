@@ -40,7 +40,7 @@
   "dependencies": {
     "big-integer": "^1.6.44",
     "buffer": "^5.4.0",
-    "jszip": "^3.2.2",
+    "jszip": "^3.7.0",
     "param-case": "^2.1.1",
     "pascal-case": "^2.0.1"
   }
